@@ -23,9 +23,9 @@ public class DbInit implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         LOGGER.info("Kod wykonywany po inicjalizacji beana");
-        User admin1 = new User("admin1", passwordEncoder.encode("pass1"), "ADMIN",null);
+        User admin1 = new User("admin1", passwordEncoder.encode("pass1"), "ADMIN");
         userRepository.save(admin1);
-        User user1 = new User("user1", passwordEncoder.encode("pass1"), "USER",null);
+        User user1 = new User("user1", passwordEncoder.encode("pass1"), "USER");
         userRepository.save(user1);
     }
 }

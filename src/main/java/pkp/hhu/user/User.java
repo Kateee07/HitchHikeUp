@@ -3,13 +3,11 @@ package pkp.hhu.user;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pkp.hhu.users_places.UsersPlacesAssociation;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -23,14 +21,11 @@ public class User implements UserDetails {
     @Size(min=6, message="Hasło musi mieć conajmniej {min} znaki")
     private String password;
     private String role;
-    @OneToMany(mappedBy="users")
-    private List<UsersPlacesAssociation> places;
 
-    public User(String username, String password, String role, List<UsersPlacesAssociation> places) {
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
-        this.places = places;
     }
 
     public User() {
@@ -48,9 +43,6 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public void setPlaces(List<UsersPlacesAssociation> places) {
-        this.places = places;
-    }
 
     public Integer getId() {
         return id;
@@ -60,9 +52,6 @@ public class User implements UserDetails {
         return role;
     }
 
-    public List<UsersPlacesAssociation> getPlaces() {
-        return places;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
