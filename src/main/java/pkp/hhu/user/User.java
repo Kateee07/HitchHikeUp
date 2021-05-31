@@ -3,11 +3,13 @@ package pkp.hhu.user;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pkp.hhu.post.Post;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -16,11 +18,13 @@ public class User implements UserDetails {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     @Column(unique = true)
-    @Size(min=4, message="Nazwa użytkownika musi mieć conajmniej {min} znaki")
+    @Size(min=4, max=31, message="Nazwa użytkownika musi mieć conajmniej {min} znaki i maksymalni {max} znaków.")
     private String username;
-    @Size(min=6, message="Hasło musi mieć conajmniej {min} znaki")
+    @Size(min=6, message="Hasło musi mieć conajmniej {min} znaki.")
     private String password;
     private String role;
+
+
 
     public User(String username, String password, String role) {
         this.username = username;

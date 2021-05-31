@@ -9,6 +9,7 @@ public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Size(max=255, message="Maksymalnie {max} znaków.")
     private String name;
     private float lat; //szerokość
     private float lng; //długość
