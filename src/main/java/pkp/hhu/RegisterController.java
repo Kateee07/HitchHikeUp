@@ -22,23 +22,23 @@ public class RegisterController {
     }
 
     @GetMapping
-    public String getRegisterForm(ModelMap modelMap){
+    public String getRegisterForm(ModelMap modelMap) {
         modelMap.addAttribute("person", new User());
         return "register";
     }
+
     @PostMapping
     public String register(ModelMap modelMap, @Validated User user, BindingResult bindingResult) {
         modelMap.addAttribute("person", user);
         if (bindingResult.hasErrors()) {
             return "register";
         }
-        try{
-            userService.save(user);}
-        catch (DataIntegrityViolationException e){
+        try {
+            userService.save(user);
+        } catch (DataIntegrityViolationException e) {
             modelMap.addAttribute("usernameAlreadyExists", true);
             return "register";
-        }
-        catch (BadCredentialsException a){
+        } catch (BadCredentialsException a) {
             modelMap.addAttribute("wrongPassword", true);
             return "register";
 
