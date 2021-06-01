@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<h1> Go register! </h1>
+<form th:action="@{/register}" th:method="post" th:object="${person}" th:autocomplete="off">
+    <div>
+        <label>Name: <input type="text" th:field="*{username}"></label>
+        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        <span th:if="${usernameAlreadyExists}">A user with this name is already exists</span>
+    </div>
+    <div>
+        <label>Password: <input type="password" th:field="*{password}"></label>
+        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        <span th:if="${wrongPassword}"> Check that your password is at least 6 characters long,
+        has at least one capital letter and one number</span>
+    </div>
+    <input type="submit">
+</form>
+<a th:href="@{/hhu}">Back</a>
+</body>
+</html>
