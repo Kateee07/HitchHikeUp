@@ -1,5 +1,8 @@
 package pkp.hhu.place;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class PlaceService {
     private PlaceRepository placeRepository;
 
@@ -7,4 +10,7 @@ public class PlaceService {
         this.placeRepository = placeRepository;
     }
 
+    public void save(Place place) {
+        placeRepository.save(place);
+    }
 }
