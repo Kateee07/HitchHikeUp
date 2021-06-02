@@ -11,8 +11,8 @@ public class Place {
     private Integer id;
     @Size(max=255, message="Maksymalnie {max} znaków.")
     private String name;
-    private float lat; //szerokość
-    private float lng; //długość
+    private double lat; //szerokość
+    private double lng; //długość
     @Size(max=2, message="Maksymalnie {max} znaki. Kierunek określ kierunkami geograficznymi N S W E lub ich połączeniem np NW")
     private String direction;
     private double rateAvg;
@@ -32,6 +32,12 @@ public class Place {
         this.photo = photo;
     }
 
+    public Place(float lat, float lng) {
+        this.lat = lat;
+        this.lng = lng;
+
+    }
+
     public Place() {
     }
 
@@ -43,11 +49,11 @@ public class Place {
         return name;
     }
 
-    public float getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public float getLng() {
+    public double getLng() {
         return lng;
     }
 
@@ -75,11 +81,11 @@ public class Place {
         this.name = name;
     }
 
-    public void setLat(float lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public void setLng(float lng) {
+    public void setLng(double lng) {
         this.lng = lng;
     }
 
@@ -101,5 +107,20 @@ public class Place {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                ", direction='" + direction + '\'' +
+                ", rateAvg=" + rateAvg +
+                ", timeAvg=" + timeAvg +
+                ", description='" + description + '\'' +
+                ", photo='" + photo + '\'' +
+                '}';
     }
 }

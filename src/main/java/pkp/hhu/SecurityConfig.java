@@ -18,14 +18,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
-                .loginPage("/hhu")
-                .defaultSuccessUrl("/after-login")
+        http.csrf().disable()
+                .httpBasic()
                 .and()
-
+           //     .formLogin()
+           //     .loginPage("/hhu")
+           //     .defaultSuccessUrl("/after-login")
+           //     .and()
                 .authorizeRequests()
-                .antMatchers("/register").permitAll()
                 .antMatchers("/after-login")
+                .authenticated()
+                .antMatchers("/post")
+                .authenticated()
+                .antMatchers("/post/coordinates")
                 .authenticated()
                 .antMatchers("/**")
                 .permitAll();

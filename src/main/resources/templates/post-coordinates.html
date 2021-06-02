@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add post</title>
+</head>
+<body>
+<h1> Add new post </h1>
+<form th:method="post" th:object="${place}" th:autocomplete="off">
+    <div>
+        <label> Name: <input type="text" th:field="*{name}"></label>
+    </div>
+    <div>
+        <label> Latitude: <input type="number" th:field="*{lat}"> </label>
+    </div>
+    <div>
+        <label> Longitude: <input type="number" th:field="*{lng}"> </label>
+    </div>
+    <div>
+        <label>Direction </label>
+        <select name="Direction" th:field="*{direction}">
+            <option value="N">N</option>
+            <option value="S">S</option>
+            <option value="W">W</option>
+            <option value="E">E</option>
+            <option value="SW">SW</option>
+            <option value="NW">NW</option>
+            <option value="SE">SE</option>
+            <option value="NE">NE</option>
+        </select>
+    </div>
+    <div>
+        <label>Description: <input type="text" th:field="*{description}"></label>
+    </div>
+    <div>
+        <label>Photo: <input type="file" th:field="*{photo}"></label>
+    </div>
+    <input type="submit">
+</form>
+<a th:href="@{/hhu}">Back to log menu</a>
+</body>
+</html>
