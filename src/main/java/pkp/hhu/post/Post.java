@@ -23,4 +23,76 @@ public class Post {
     @CreatedDate()
     private LocalDate date;
 
+    public Post(User user, Place place, int rate, int time, String comment, LocalDate date) {
+        this.user = user;
+        this.place = place;
+        this.rate = rate;
+        this.time = time;
+        this.comment = comment;
+        this.date = date;
+    }
+
+    public Post() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", user=" + user +
+                ", place=" + place +
+                ", rate=" + rate +
+                ", time=" + time +
+                ", comment='" + comment + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

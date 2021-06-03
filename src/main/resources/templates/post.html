@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add post</title>
+</head>
+<body>
+<h1> Add new post </h1>
+<form th:action="@{/post}" th:method="post" th:autocomplete="off">
+    <div>
+        <label> Name: <input type="text" th:field="*{place.name}"></label>
+    </div>
+    <div>
+        <label> Latitude: <input type="text" th:field="${place.lat}"> </label>
+    </div>
+    <div>
+        <label> Longitude: <input type="text" th:field="*{place.lng}"> </label>
+    </div>
+    <div>
+        <label>Direction </label>
+       <select name="Direction" th:field="*{place.direction}">
+        <option value="N">N</option>
+        <option value="S">S</option>
+        <option value="W">W</option>
+        <option value="E">E</option>
+        <option value="SW">SW</option>
+        <option value="NW">NW</option>
+        <option value="SE">SE</option>
+        <option value="NE">NE</option>
+    </select>
+    </div>
+    <div>
+        <label>Description: <input type="text" th:field="*{place.description}"></label>
+    </div>
+    <div>
+        <label>Photo: <input type="file" th:field="*{place.photo}"></label>
+    </div>
+    <div>
+        <label>Rate (max 10): <input type="number" th:max="10" th:field="*{post.rate}"></label>
+    </div>
+    <div>
+        <label>Time: <input type="text" th:field="*{post.time}"></label>
+    </div>
+    <div>
+        <label>Comment: <input type="text" th:field="*{post.comment}"></label>
+    </div>
+    <input type="submit">
+</form>
+<a th:href="@{/hhu}">Back to log menu</a>
+</body>
+</html>
