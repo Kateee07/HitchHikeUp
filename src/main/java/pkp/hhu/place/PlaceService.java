@@ -13,6 +13,7 @@ public class PlaceService {
     }
 
     public List<Place> findAll() {return placeRepository.findAll();}
+
     public void save(Place place) {
         placeRepository.save(place);
     }

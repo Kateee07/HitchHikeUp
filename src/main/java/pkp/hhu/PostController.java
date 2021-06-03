@@ -1,18 +1,15 @@
 package pkp.hhu;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import pkp.hhu.place.Place;
 import pkp.hhu.place.PlaceService;
 import pkp.hhu.post.Post;
 import pkp.hhu.post.PostService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/post")
@@ -26,6 +23,7 @@ public class PostController {
     }
 
     @GetMapping
+
     public String getPostForm(ModelMap modelMap) {
         modelMap.addAttribute("place", new Place());
         modelMap.addAttribute("post", new Post());
@@ -41,6 +39,7 @@ public class PostController {
         return "post-added";
     }
 
+
     @GetMapping("/coordinates")
     public String getCoordinatesPostForm(ModelMap modelMap) {
         modelMap.addAttribute("place", new Place());
@@ -54,4 +53,5 @@ public class PostController {
         modelMap.addAttribute("post", new Post());
         return "post";
     }
+
 }
