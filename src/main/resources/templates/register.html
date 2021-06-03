@@ -3,23 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.6.0-1/css/bootstrap.min.css} "/>
 </head>
 <body>
-<h1> Go register! </h1>
-<form th:action="@{/register}" th:method="post" th:object="${person}" th:autocomplete="off">
-    <div>
-        <label>Name: <input type="text" th:field="*{username}"></label>
-        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
-        <span th:if="${usernameAlreadyExists}">A user with this name is already exists</span>
-    </div>
-    <div>
-        <label>Password: <input type="password" th:field="*{password}"></label>
-        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-        <span th:if="${wrongPassword}"> Check that your password is at least 6 characters long,
+<div class="bg-image" id="all-page" style="background-image:url('http://grzegorzczekala.pl/wp-content/uploads/2019/06/cov-podr%C3%B3%C5%BCe-autostop-atlas-green.jpg');
+    height:100vh; background-position: center; background-repeat: no-repeat; background-size: cover;">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">HitchHikeUp</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <h1 class="h1" style="color: yellow">Go register</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10 mt-5">
+                <form th:action="@{/register}" th:method="post" th:object="${person}" th:autocomplete="off">
+                    <div class="form-group row">
+                        <label for="username" class="col-sm-2 col-form-label" th:style="'background-color: white'">Username:</label>
+                        <div class="col-sm-4">
+                             <input type="text" class="form-control" id="username" th:field="*{username}">
+                            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                            <span th:if="${usernameAlreadyExists}">A user with this name is already exists</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-2 col-form-label" th:style="'background-color: white'">Password:</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="password"
+                                           th:field="*{password}">
+                            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                            <span th:if="${wrongPassword}"> Check that your password is at least 6 characters long,
         has at least one capital letter and one number</span>
+                        </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Register</button>
+                </form>
+            </div>
+        </div>
+        <a th:href="@{/hhu}" class="nav-link">Back</a>
     </div>
-    <input type="submit">
-</form>
-<a th:href="@{/hhu}">Back</a>
+</div>
 </body>
 </html>
