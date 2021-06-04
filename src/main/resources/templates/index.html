@@ -5,7 +5,8 @@
     <title>Main page</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.6.0-1/css/bootstrap.min.css} "/>
-       <style>
+    <link th:href="@{/map.css}" rel="stylesheet" />
+    <!--style>
 
         #map {
             height: 100%;
@@ -18,7 +19,7 @@
             margin: 0;
             padding: 0;
         }
-    </style>
+    </style-->
     <script>
         let map, infoWindow;
 
@@ -80,17 +81,50 @@
             //Kliknij przycisk "add spot", aby dodac marker
             newSpotButton.addEventListener("click", () => {
                 //Dodaj marker w miejscu gdzie znajdujee sie kursos na mapie.
-                google.maps.event.addListener(map, 'click', function (e) {
-                    //Znajdz lokalizacje klikniecia
-                    var location = e.latLng;
-                    //Stworz marker i wstaw go na mape
-                    var marker = new google.maps.Marker({
-                        position: location,
-                        map: map
-                    })
-                })
-            })
+
+                google.maps.event.addListener(map, 'click', function (event) {
+                    placeMarker(map, event.latLng);
+                }, {once: true});
+
+            }, {once: true})
+
+            function placeMarker(map, location) {
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map
+                });
+                console.log(location.lat());
+                var infowindow = new google.maps.InfoWindow({
+                    content: 'Latitude: ' + location.lat() +
+                        '<br>Longitude: ' + location.lng()
+                });
+                infowindow.open(map, marker);
+
+            }
+
         }
+
+        // let base64 = require('base-64');
+        // let url = 'http://localhost:8080/post/coordinates';
+        // let username = 'user1';
+        // let password = 'pass1';
+        // let dataBody = JSON.stringify({"lat": location.lat(), "lng": location.lng()})
+        //
+        // let headers = new Headers();
+        // headers.append('Authorization', 'Basic' + base64.encode(username + ":" + password));
+        // headers.append('Accept', 'application/json, text/plain, */*');
+        // headers.append('Content-Type', 'application/json');
+        //
+        // console.log(headers);
+        //
+        // let requestPost = new Request(url, {
+        //     method: 'POST',
+        //     body: dataBody,
+        //     headers: headers
+        // })
+        // fetch(requestPost).then(res => res.json())
+        //     .then(res => console.log(res));
+
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
             infoWindow.setContent(
