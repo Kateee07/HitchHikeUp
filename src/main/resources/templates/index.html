@@ -4,22 +4,14 @@
     <meta charset="UTF-8">
     <title>Main page</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.6.0-1/css/bootstrap.min.css} "/>
+    <script src="scripts/base64.js"></script>
+    <script src="scripts/require.js"></script>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.6.0-1/css/bootstrap.css} "/>
+    <link th:rel="stylesheet" th:href="@{styles/map.css} "/>
 
-    <style>
 
-        #map {
-            height: 100%;
-        }
-        /* Optional: Makes the sample page fill the window. */
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
     <script th:inline="javascript">
+
         let map, infoWindow;
 
         function initMap(listener) {
@@ -35,7 +27,7 @@
             // var marker;
             var i
 
-            for (i = 0; locationsList.length-1; i++) {
+            for (i = 0; i < (locationsList.length); i++) {
                 oneLocation = locationsList[i];
                 var latL = oneLocation.lat;
                 var lngL = oneLocation.lng;
@@ -45,8 +37,7 @@
                 placeMarker(map, latLng);
                 //html: document.getElementById("infoForm")
 
-            }
-            ;
+            };
 
             //Stworz nowy obiekt okno informacyjne o nazwie "infoWindow"
             infoWindow = new google.maps.InfoWindow();
@@ -101,7 +92,7 @@
                 //Dodaj marker w miejscu gdzie znajdujee sie kursos na mapie.
 
                 google.maps.event.addListener(map, 'click', function (event) {
-                    placeMarker(map, event.latLng);
+                    placeNewMarker(map, event.latLng);
                     console.log(event.latLng);
                 }, {once: true});
 
@@ -122,29 +113,171 @@
 
             }
 
+            function placeNewMarker(map, location) {
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map
+                });
+
+
+                const contentString =
+                    '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    "</div>" +
+                    '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+                    '<div id="bodyContent">' +
+                    fetchServer(location) +
+                    "</div>" +
+                    "</div>";
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                    infowindow.open(map, marker);
+
+
+            }
+
+           // let base64 = require('base-64');
+            function fetchServer(location){
+                let url = 'http://localhost:8080/post/coordinates';
+                let username = 'user1';
+                let password = 'pass1';
+                let dataBody = JSON.stringify({"lat": location.lat, "lng": location.lng})
+
+                let headers = new Headers();
+                requirejs(["scripts/base64.js"], function (encode) {
+                    headers.append('Authorization', 'Basic ' + base64.encode(username + ":" + password));
+                });
+                headers.append('Accept', 'application/json, text/plain, */*');
+                headers.append('Content-Type', 'application/json');
+
+                let requestPost = new Request(url, {
+                    method: 'POST',
+                    body: dataBody,
+                    headers: headers
+                })
+                fetch(requestPost)
+                    .then(response => response.body)
+                    .then(rb => {
+                        const reader = rb.getReader();
+
+                        return new ReadableStream({
+                            start(controller) {
+                                // The following function handles each data chunk
+                                function push() {
+                                    // "done" is a Boolean and value a "Uint8Array"
+                                    reader.read().then( ({done, value}) => {
+                                        // If there is no more data to read
+                                        if (done) {
+                                            console.log('done', done);
+                                            controller.close();
+                                            return;
+                                        }
+                                        // Get the data and send it to the browser via the controller
+                                        controller.enqueue(value);
+                                        // Check chunks by logging to the console
+                                        console.log(done, value);
+                                        push();
+                                    })
+                                }
+
+                                push();
+                            }
+                        });
+                    })
+                    .then(stream => {
+                        // Respond with our stream
+                        return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+                    })
+                    .then(result => {
+                        // Do things with result
+                        console.log(result);
+                        return result;
+                    });
+            }
+
+            // function readStream() {
+            //     const reader = stream.getReader();
+            //     let charsReceived = 0;
+            //     let result = '';
+            //
+            //     // read() returns a promise that resolves
+            //     // when a value has been received
+            //     reader.read().then(function processText({ done, value }) {
+            //         // Result objects contain two properties:
+            //         // done  - true if the stream has already given you all its data.
+            //         // value - some data. Always undefined when done is true.
+            //         if (done) {
+            //             console.log("Stream complete");
+            //             para.textContent = result;
+            //             return;
+            //         }
+            //
+            //         charsReceived += value.length;
+            //         const chunk = value;
+            //         let listItem = document.createElement('li');
+            //         listItem.textContent = 'Read ' + charsReceived + ' characters so far. Current chunk = ' + chunk;
+            //         list2.appendChild(listItem);
+            //
+            //         result += chunk;
+            //
+            //         // Read some more, and call this function again
+            //         return reader.read().then(processText);
+            //     });
+            // }
+        //     let url = 'http://localhost:8080/post/coordinates';
+        //     let username = 'user1';
+        //     let password = 'pass1';
+        //     let dataBody = JSON.stringify({"lat": location.lat, "lng": location.lng})
+        //
+        //     let headers = new Headers();
+        //     requirejs(["scripts/base64.js"], function (encode) {
+        //         headers.append('Authorization', 'Basic ' + base64.encode(username + ":" + password));
+        //     });
+        //     headers.append('Accept', 'application/json, text/plain, */*');
+        //     headers.append('Content-Type', 'application/json');
+        //
+        //     console.log(headers);
+        //
+        //     let requestPost = new Request(url, {
+        //         method: 'POST',
+        //         body: dataBody,
+        //         headers: headers
+        //     })
+        //     fetch(requestPost)
+        //         .then(async response => {
+        //             try {
+        //                 const data = await response.json()
+        //                 console.log('response data?', data)
+        //             } catch(error) {
+        //                 console.log('Error happened here!')
+        //                 console.error(error)
+        //             }
+        //         })
+        //         // .then((responseJson) => {
+        //         //     console.log(responseJson);
+        //         //
+        //         //     this.setState({
+        //         //         data: responseJson
+        //         //     })
+        //         // })
+        //         // .catch((error) => {
+        //         //     console.error(error);
+        //         // });
+        // .then(data => {
+        //         // enter you logic when the fetch is successful
+        //         console.log(data)
+        //     })
+        //         .catch(error => {
+        //             // enter your logic for when there is an error (ex. error toast)
+        //             console.log(error)
+        //         });
         }
 
 
-        // let base64 = require('base-64');
-        // let url = 'http://localhost:8080/post/coordinates';
-        // let username = 'user1';
-        // let password = 'pass1';
-        // let dataBody = JSON.stringify({"lat": location.lat(), "lng": location.lng()})
-        //
-        // let headers = new Headers();
-        // headers.append('Authorization', 'Basic' + base64.encode(username + ":" + password));
-        // headers.append('Accept', 'application/json, text/plain, */*');
-        // headers.append('Content-Type', 'application/json');
-        //
-        // console.log(headers);
-        //
-        // let requestPost = new Request(url, {
-        //     method: 'POST',
-        //     body: dataBody,
-        //     headers: headers
-        // })
-        // fetch(requestPost).then(res => res.json())
-        //     .then(res => console.log(res));
+
+
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
