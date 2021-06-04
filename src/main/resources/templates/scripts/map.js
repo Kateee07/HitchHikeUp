@@ -9,70 +9,72 @@ function initMap(listener) {
     // Stworz nowy obiekt google maps o nazwie "map"
     map = new google.maps.Map(document.getElementById("map"), {
         center: warsaw,
-        zoom: 8,                                  // Przybliżenie skala 1 - świat, 20 - budynek
+        zoom: 8,
     });
-    //Stworz nowy obiekt okno informacyjne o nazwie "infoWindow"
+
+    var locationsList = [[${places}]];
+    var oneLocation = [];
+    var marker;
     infoWindow = new google.maps.InfoWindow();
-    //Stworz przycisk - HTML element o nazwie locationButton
+
+    var i;
+    for (i = 0; locationsList.length; i++) {
+        oneLocation = locationsList[i];
+        var lat = oneLocation.lat;
+        var lng = oneLocation.lng;
+        console.log(oneLocation.lat);
+        console.log(oneLocation.lng);
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lat, lng),
+            map: map,
+            //html: document.getElementById("infoForm")
+        });
+    }
+
     const locationButton = document.createElement("button");
-    //Napis wyswietlany dla uzytkownika w przycisku
     locationButton.textContent = "Locate me.";
-    //Dodanie HTMLowej nazwy klasy dla przycisku
     locationButton.classList.add("custom-map-control-button");
-    //Lokalizacja przycisku - Gora srodek
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-    //Zrob cos po wcisnieciu przycisku
     locationButton.addEventListener("click", () => {
-        // Sprobuj geolokaliacji HTML5 - uzytkownik moze ja miec wylaczona
         if (navigator.geolocation) {
-            //Wez aktualna lokalizacje
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const pos = {
-                        lat: position.coords.latitude,  // Szerokosc geograficzna
-                        lng: position.coords.longitude, // Dlugosc geograficzna
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
                     };
-                    infoWindow.setPosition(pos);        // Ustaw pozycje na pobrane wartosci
-                    infoWindow.setContent("Location found."); //Wyswietli na wyszukanej lokalizacji napis w srodku
-                    infoWindow.open(map); // Otworz mape
-                    map.setCenter(pos);   // Ustaw pozycje na pobrana pozycje uzytkownika
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent("Location found.");
+                    infoWindow.open(map);
+                    map.setCenter(pos);
                 },
                 () => {
                     handleLocationError(true, infoWindow, map.getCenter());
                 }
             );
         } else {
-            // Przegladarka nie wspiera Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
         }
-    });
-
-    // Lokalizacja Gdanska
-    const gdansk = {lat: 54.372158, lng: 18.638306};
-    // Marker z pozycja na Gdansku
-    const marker = new google.maps.Marker({
-        position: gdansk,
-        map: map,
     });
 
     const newSpotButton = document.createElement("button");
     newSpotButton.textContent = "Add spot.";
     newSpotButton.classList.add("custom-map-control-button");
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(newSpotButton);
-    //Kliknij przycisk "add spot", aby dodac marker
     newSpotButton.addEventListener("click", () => {
-        //Dodaj marker w miejscu gdzie znajdujee sie kursos na mapie.
         google.maps.event.addListener(map, 'click', function (e) {
-            //Znajdz lokalizacje klikniecia
-            var location = e.latLng;
-            //Stworz marker i wstaw go na mape
-            var marker = new google.maps.Marker({
+            location = e.latLng;
+
+            marker = new google.maps.Marker({
                 position: location,
-                map: map
+                map: map,
+                //html: document.getElementById("postForm")
             })
+
         })
     })
 }
+
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
