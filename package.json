@@ -1,0 +1,7 @@
+{
+  "name": "HitchHikeUp",
+  "version": "1.0.0",
+  "dependencies": {
+    "base-64": "^1.0.0"
+  }
+}
