@@ -10,6 +10,7 @@
         #map {
             height: 100%;
         }
+
         /* Optional: Makes the sample page fill the window. */
         html,
         body {
@@ -20,6 +21,7 @@
     </style>
     <script>
         let map, infoWindow;
+
         function initMap(listener) {
             const warsaw = {lat: 52.237049, lng: 21.017532};
             // Stworz nowy obiekt google maps o nazwie "map"
@@ -62,13 +64,15 @@
                     handleLocationError(false, infoWindow, map.getCenter());
                 }
             });
+
             // Lokalizacja Gdanska
             const gdansk = {lat: 54.372158, lng: 18.638306};
             // Marker z pozycja na Gdansku
-            const marker = new google.maps.Marker({
+            const markerGD = new google.maps.Marker({
                 position: gdansk,
                 map: map,
             });
+
             const newSpotButton = document.createElement("button");
             newSpotButton.textContent = "Add spot.";
             newSpotButton.classList.add("custom-map-control-button");
@@ -100,12 +104,14 @@
 </head>
 <body>
 
-<div id="before-map" th:style="'background-image:url(' + @{/images/2.jpg} + '); height:55vh; background-position: center; background-repeat: no-repeat; background-size: cover;'">
+<div id="before-map"
+     th:style="'background-image:url(' + @{/images/2.jpg} + '); height:55vh; background-position: center; background-repeat: no-repeat; background-size: cover;'">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container">
             <a class="navbar-brand" href="/">HitchHikeUp</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -128,20 +134,21 @@
     </nav>
     <!--img src="../static/images/1.jpg" width="1000" th:src="@{images/1.jpg}"/-->
     <h2>Please login</h2>
-    <div class="container" >
+    <div class="container">
         <div class="row">
             <div class="col-sm-10 mt-5">
                 <form method="post" th:action="@{/hhu}">
                     <div class="form-group row">
                         <label for="username" class="col-sm-2 col-form-label" th:style="'background-color: white'">Username:</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="username"  th:name="username"/>
+                            <input type="text" class="form-control" id="username" th:name="username"/>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password" class="col-sm-2 col-form-label" th:style="'background-color: white'">Password:</label>
                         <div class="col-sm-4">
-                            <input type="password" class="form-control" id="password" autocomplete="off" th:name="password"/>
+                            <input type="password" class="form-control" id="password" autocomplete="off"
+                                   th:name="password"/>
                         </div>
                     </div>
                     <button class="btn btn-primary" type="submit">Zaloguj</button>
@@ -167,8 +174,9 @@
 </div>
 
 <div id="map"></div>
-<script>
-
-</script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=APIKEY&callback=initMap&libraries=&v=weekly"
+        async
+></script>
 </body>
 </html>
