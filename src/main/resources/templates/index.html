@@ -6,12 +6,11 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.6.0-1/css/bootstrap.min.css} "/>
     <link th:href="@{/map.css}" rel="stylesheet" />
-    <!--style>
+    <style>
 
         #map {
             height: 100%;
         }
-
         /* Optional: Makes the sample page fill the window. */
         html,
         body {
@@ -19,7 +18,7 @@
             margin: 0;
             padding: 0;
         }
-    </style-->
+    </style>
     <script>
         let map, infoWindow;
 
@@ -138,8 +137,7 @@
 </head>
 <body>
 
-<div id="before-map"
-     th:style="'background-image:url(' + @{/images/2.jpg} + '); height:55vh; background-position: center; background-repeat: no-repeat; background-size: cover;'">
+<div id="before-map" th:style="'background-image:url(' + @{/images/2.jpg} + '); height:55vh; background-position: center; background-repeat: no-repeat; background-size: cover;'">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container">
@@ -166,9 +164,9 @@
             </div>
         </div>
     </nav>
-    <!--img src="../static/images/1.jpg" width="1000" th:src="@{images/1.jpg}"/-->
-    <h2>Please login</h2>
-    <div class="container">
+
+    <div class="container" >
+
         <div class="row">
             <div class="col-sm-10 mt-5">
                 <form method="post" th:action="@{/hhu}">
@@ -181,8 +179,7 @@
                     <div class="form-group row">
                         <label for="password" class="col-sm-2 col-form-label" th:style="'background-color: white'">Password:</label>
                         <div class="col-sm-4">
-                            <input type="password" class="form-control" id="password" autocomplete="off"
-                                   th:name="password"/>
+                            <input type="password" class="form-control" id="password" autocomplete="off" th:name="password"/>
                         </div>
                     </div>
                     <button class="btn btn-primary" type="submit">Zaloguj</button>
@@ -191,26 +188,68 @@
             </div>
         </div>
     </div>
-
-    <!--form th:action="@{/hhu}" th:method="post">
-        <div>
-            <label>
-                Name: <input type="text" th:name="username">
-            </label>
-        </div>
-        <div>
-            <label>
-                Password: <input type="password" th:name="password">
-            </label>
-        </div>
-        <input type="submit">
-    </form -->
 </div>
 
 <div id="map"></div>
-<script
-        src="https://maps.googleapis.com/maps/api/js?key=APIKEY&callback=initMap&libraries=&v=weekly"
-        async
-></script>
+
+<div id="postForm">
+    <h1> Add new post </h1>
+    <form th:action="@{/post}" th:method="post" th:autocomplete="off">
+        <div>
+            <label> Name: <input type="text" th:field="*{place.name}"></label>
+        </div>
+        <div>
+            <label> Latitude: <input type="text" th:field="${place.lat}"> </label>
+        </div>
+        <div>
+            <label> Longitude: <input type="text" th:field="*{place.lng}"> </label>
+        </div>
+        <div>
+            <label>Direction </label>
+            <select name="Direction" th:field="*{place.direction}">
+                <option value="N">N</option>
+                <option value="S">S</option>
+                <option value="W">W</option>
+                <option value="E">E</option>
+                <option value="SW">SW</option>
+                <option value="NW">NW</option>
+                <option value="SE">SE</option>
+                <option value="NE">NE</option>
+            </select>
+        </div>
+        <div>
+            <label>Description: <input type="text" th:field="*{place.description}"></label>
+        </div>
+        <div>
+            <label>Photo: <input type="file" th:field="*{place.photo}"></label>
+        </div>
+        <div>
+            <label>Rate (max 10): <input type="number" th:max="10" th:field="*{post.rate}"></label>
+        </div>
+        <div>
+            <label>Time: <input type="text" th:field="*{post.time}"></label>
+        </div>
+        <div>
+            <label>Comment: <input type="text" th:field="*{post.comment}"></label>
+        </div>
+        <input type="submit">
+    </form>
+</div>
+
+
+<div id="infoForm">
+    <table>
+        <input name="id" type="hidden" id="id"/>
+        <td><a>Description:</a></td>
+        <td><textarea disabled id="description" placeholder="description"></textarea></td>
+    </table>
+</div>
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+</script>
+<script th:inline="javascript">
+
+</script>
+
 </body>
 </html>
