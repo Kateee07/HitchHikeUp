@@ -10,6 +10,7 @@
         #map {
             height: 100%;
         }
+
         /* Optional: Makes the sample page fill the window. */
         html,
         body {
@@ -151,8 +152,64 @@
 </div>
 
 <div id="map"></div>
-<script>
+
+<div id="postForm">
+    <h1> Add new post </h1>
+    <form th:action="@{/post}" th:method="post" th:autocomplete="off">
+        <div>
+            <label> Name: <input type="text" th:field="*{place.name}"></label>
+        </div>
+        <div>
+            <label> Latitude: <input type="text" th:field="${place.lat}"> </label>
+        </div>
+        <div>
+            <label> Longitude: <input type="text" th:field="*{place.lng}"> </label>
+        </div>
+        <div>
+            <label>Direction </label>
+            <select name="Direction" th:field="*{place.direction}">
+                <option value="N">N</option>
+                <option value="S">S</option>
+                <option value="W">W</option>
+                <option value="E">E</option>
+                <option value="SW">SW</option>
+                <option value="NW">NW</option>
+                <option value="SE">SE</option>
+                <option value="NE">NE</option>
+            </select>
+        </div>
+        <div>
+            <label>Description: <input type="text" th:field="*{place.description}"></label>
+        </div>
+        <div>
+            <label>Photo: <input type="file" th:field="*{place.photo}"></label>
+        </div>
+        <div>
+            <label>Rate (max 10): <input type="number" th:max="10" th:field="*{post.rate}"></label>
+        </div>
+        <div>
+            <label>Time: <input type="text" th:field="*{post.time}"></label>
+        </div>
+        <div>
+            <label>Comment: <input type="text" th:field="*{post.comment}"></label>
+        </div>
+        <input type="submit">
+    </form>
+</div>
+
+<div id="infoForm">
+    <table>
+        <input name="id" type="hidden" id="id"/>
+        <td><a>Description:</a></td>
+        <td><textarea disabled id="description" placeholder="description"></textarea></td>
+    </table>
+</div>
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+</script>
+<script th:inline="javascript">
 
 </script>
+
 </body>
 </html>
