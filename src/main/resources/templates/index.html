@@ -5,7 +5,7 @@
     <title>Main page</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.6.0-1/css/bootstrap.min.css} "/>
-    <link th:href="@{/map.css}" rel="stylesheet" />
+
     <style>
 
         #map {
@@ -19,16 +19,35 @@
             padding: 0;
         }
     </style>
-    <script>
+    <script th:inline="javascript">
         let map, infoWindow;
 
         function initMap(listener) {
-            const warsaw = {lat: 52.237049, lng: 21.017532};
+           const warsaw = {lat: 52.237049, lng: 21.017532};
             // Stworz nowy obiekt google maps o nazwie "map"
             map = new google.maps.Map(document.getElementById("map"), {
                 center: warsaw,
                 zoom: 8,                                  // Przybliżenie skala 1 - świat, 20 - budynek
             });
+
+            var locationsList = [[${places}]];
+            var oneLocation = [];
+            // var marker;
+            var i
+
+            for (i = 0; locationsList.length-1; i++) {
+                oneLocation = locationsList[i];
+                var latL = oneLocation.lat;
+                var lngL = oneLocation.lng;
+                var latLng = {lat:  latL, lng : lngL };
+                console.log(oneLocation.lat);
+                console.log(oneLocation.lng);
+                placeMarker(map, latLng);
+                //html: document.getElementById("infoForm")
+
+            }
+            ;
+
             //Stworz nowy obiekt okno informacyjne o nazwie "infoWindow"
             infoWindow = new google.maps.InfoWindow();
             //Stworz przycisk - HTML element o nazwie locationButton
@@ -83,6 +102,7 @@
 
                 google.maps.event.addListener(map, 'click', function (event) {
                     placeMarker(map, event.latLng);
+                    console.log(event.latLng);
                 }, {once: true});
 
             }, {once: true})
@@ -92,16 +112,18 @@
                     position: location,
                     map: map
                 });
-                console.log(location.lat());
                 var infowindow = new google.maps.InfoWindow({
-                    content: 'Latitude: ' + location.lat() +
-                        '<br>Longitude: ' + location.lng()
+                    content: 'Latitude: ' + location.lat +
+                        '<br>Longitude: ' + location.lng
                 });
-                infowindow.open(map, marker);
+                marker.addListener("click", () => {
+                    infowindow.open(map, marker);
+                });
 
             }
 
         }
+
 
         // let base64 = require('base-64');
         // let url = 'http://localhost:8080/post/coordinates';
@@ -245,7 +267,7 @@
     </table>
 </div>
 <script async
-        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByTO8qyZh8RrVO61nvhjaKL7O1bdlVqx4&callback=initMap">
 </script>
 <script th:inline="javascript">
 
