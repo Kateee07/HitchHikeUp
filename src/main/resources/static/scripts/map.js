@@ -3,7 +3,7 @@
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
 
-// import MarkerClusterer from '@googlemaps/markerclustererplus';
+//import MarkerClusterer from '@googlemaps/markerclustererplus';
 let map, infoWindow;
 
 function initMap(listener) {
@@ -20,10 +20,10 @@ function initMap(listener) {
     const blueMarker = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
     const redMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
 
-     //  var locationsList = [[${places}]]; //locationList - zostało zmienną globalną zainicjalizowaną w index.html, tu już nie trzeba jej inicjalizować
+    //var locationsList = [[${places}]]; //locationList - zostało zmienną globalną zainicjalizowaną w index.html, tu już nie trzeba jej inicjalizować
     var oneLocation = [];
-    //var locations = [];         To do clusterow
-    // var marker;
+    //var locations = [];
+    var marker;
     var i;
     for (i = 0; i < (locationsList.length); i++) {
         oneLocation = locationsList[i];
@@ -31,13 +31,13 @@ function initMap(listener) {
         var lngL = oneLocation.lng;
         var avgTime = oneLocation.timeAvg;
         var latLng = {lat: latL, lng: lngL};
-        //locations = locations + latLng + ',';     Nie wiem czy to dobrze zadziala w clusterach.
+        //locations = locations + latLng + ',';
         placeMarker(map, latLng, avgTime);
         //html: document.getElementById("infoForm")
 
-    };
+    }
 
-    // const markerClusterer = new MarkerClusterer(map, locations, {
+    //const markerClusterer = new MarkerClusterer(map, locations, {
     //     imagePath:
     //         "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
     // });
@@ -118,13 +118,17 @@ function initMap(listener) {
     }
 
     function placeNewMarker(map, location) {
-        var marker = new google.maps.Marker({
-            position: location,
-            map: map,
-            icon: blueMarker
-        });
+        if ( marker ) {
+            marker.setPosition(location);
+        } else {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                icon: blueMarker
+            });
+        }
 
-        const contentString =
+        /*const contentString =
             '<div id="content">' +
             '<div id="siteNotice">' +
             "</div>" +
@@ -132,17 +136,20 @@ function initMap(listener) {
             '<div id="bodyContent">' +
             fetchServer(location) +
             "</div>" +
-            "</div>";
+            "</div>";*/
 
+        document.getElementById("latitude").value = location.lat();
+        document.getElementById("longitude").value = location.lng();
+        document.getElementById("postForm").className = 'show';
         var infowindow = new google.maps.InfoWindow({
-            content: contentString
+            content: document.getElementById("postForm")
         });
         infowindow.open(map, marker);
     }
 
     // let base64 = require('base-64');
     function fetchServer(location) {
-        let url = 'http://localhost:8080/post/coordinates';
+        let url = 'http://localhost:8081/post/coordinates';
         let username = 'user1';
         let password = 'pass1';
         let dataBody = '{"lat": ' + location.lat() + ', "lng": ' + location.lng() + '}';
