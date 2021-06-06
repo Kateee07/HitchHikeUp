@@ -2,6 +2,10 @@
   "name": "HitchHikeUp",
   "version": "1.0.0",
   "dependencies": {
+    "@googlemaps/markerclustererplus": "^1.2.0",
     "base-64": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/google.maps": "^3.45.1"
   }
 }
