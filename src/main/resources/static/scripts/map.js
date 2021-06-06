@@ -3,7 +3,7 @@
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
 
-// import MarkerClusterer from '@googlemaps/markerclustererplus';
+//import MarkerClusterer from '@googlemaps/markerclustererplus';
 let map, infoWindow;
 
 function initMap(listener) {
@@ -20,10 +20,10 @@ function initMap(listener) {
     const blueMarker = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
     const redMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
 
-     //  var locationsList = [[${places}]]; //locationList - zostało zmienną globalną zainicjalizowaną w index.html, tu już nie trzeba jej inicjalizować
+    //var locationsList = [[${places}]]; //locationList - zostało zmienną globalną zainicjalizowaną w index.html, tu już nie trzeba jej inicjalizować
     var oneLocation = [];
-    //var locations = [];         To do clusterow
-    // var marker;
+    //var locations = [];
+    var marker;
     var i;
     for (i = 0; i < (locationsList.length); i++) {
         oneLocation = locationsList[i];
@@ -31,13 +31,13 @@ function initMap(listener) {
         var lngL = oneLocation.lng;
         var avgTime = oneLocation.timeAvg;
         var latLng = {lat: latL, lng: lngL};
-        //locations = locations + latLng + ',';     Nie wiem czy to dobrze zadziala w clusterach.
+        //locations = locations + latLng + ',';
         placeMarker(map, latLng, avgTime);
         //html: document.getElementById("infoForm")
 
     };
 
-    // const markerClusterer = new MarkerClusterer(map, locations, {
+    //const markerClusterer = new MarkerClusterer(map, locations, {
     //     imagePath:
     //         "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
     // });
@@ -118,67 +118,100 @@ function initMap(listener) {
     }
 
     function placeNewMarker(map, location) {
-        var marker = new google.maps.Marker({
-            position: location,
-            map: map,
-            icon: blueMarker
-        });
+        if ( marker ) {
+            marker.setPosition(location);
+        } else {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                icon: blueMarker
+            });
+        }
 
-        const contentString =
-            '<div id="content">' +
-            '<div id="siteNotice">' +
-            "</div>" +
-            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
-            '<div id="bodyContent">' +
-            fetchServer(location) +
-            "</div>" +
-            "</div>";
-
+        document.getElementById("latitude").value = location.lat();
+        document.getElementById("longitude").value = location.lng();
+        document.getElementById("postForm").className = 'show';
         var infowindow = new google.maps.InfoWindow({
-            content: contentString
+            content: document.getElementById("postForm")
         });
         infowindow.open(map, marker);
     }
 
-    // let base64 = require('base-64');
-    function fetchServer(location) {
-        let url = 'http://localhost:8080/post/coordinates';
-        let username = 'user1';
-        let password = 'pass1';
-        let dataBody = '{"lat": ' + location.lat() + ', "lng": ' + location.lng() + '}';
-        console.log(dataBody);
-        let headers = new Headers();
-        requirejs(["scripts/base64.js"], function (encode) {
-            headers.append('Authorization', 'Basic ' + base64.encode(username + ":" + password));
-        });
-        headers.append('Accept', 'application/json, text/plain, */*');
-        headers.append('Content-Type', 'application/json');
 
-        let requestPost = new Request(url, {
-            method: 'POST',
-            body: dataBody,
-            headers: headers
-        })
+    // function fetchServer(location) {
+    //   //  let base64 = require('base-64');
+    //     let url = 'http://localhost:8080/post/coordinates';
+    //     let username = 'user1';
+    //     let password = 'pass1';
+    //     let dataBody = '{"lat": ' + location.lat() + ', "lng": ' + location.lng() + '}';
+    //     console.log(dataBody);
+    //     let headers = new Headers();
+    //     headers.append('Authorization', 'Basic ' + btoa(username + ":" + password));
+    //     headers.append('Accept', 'application/json, text/plain, */*');
+    //     headers.append('Content-Type', 'application/json');
+    //
+    //     let requestPost = new Request(url, {
+    //         method: 'POST',
+    //         body: dataBody,
+    //         headers: headers
+    //     })
+    //
+    //     let responseText;
+    //
+    //     async function fetchTest() {
+    //         let response = await fetch(requestPost);
+    //         let resText = await response.text();
+    //         //document.getElementById('result').innerHTML = responseText;
+    //         return resText;
+    //
+    //     }
+    //
+    //     (async() => {
+    //
+    //         responseText = await fetchTest();
+    //         console.log(responseText);
+    //     })();
+    //
+    //
+    //
+    //     // const checkUserHosting = async (requestPost) => {
+    //     //     let hostPostData  = await fetch(requestPost)
+    //     //     //use string literals
+    //     //     let hostPostText = await hostPostData.text();
+    //     //     return hostPostText;
+    //     // }
+    //     //
+    //     // const getActivity = async () => {
+    //     //     let responseText = await activitiesActions.checkUserHosting(theEmail);
+    //     //     //now you can directly use jsonData
+    //     // }
+    //     // return responseText;
+    //     // console.log(responseText);
+    //     }
+    //
+    //     // var fetchedBody =  fetch(requestPost)
+    //     //     .then(res => {
+    //     //         if (res.ok) {
+    //     //             return res.text()
+    //     //         } else {
+    //     //             return Promise.reject(`Http error: ${res.status}`);
+    //     //             //lub rzucając błąd
+    //     //             //throw new Error(`Http error: ${res.status}`);
+    //     //         }
+    //     //     })
+    //     //     .then(res => {
+    //     //         return res;
+    //     //     })
+    //     //     .catch(error => {
+    //     //         console.error(error)
+    //     //     });
+    //     //
+    //     // (async function(){
+    //     //     var result = await fetchedBody;
+    //     //     console.log('Woo done!', result)
+    //     //     return result;
+    //     // })()
 
-        fetch(requestPost)
-            .then(res => {
-                if (res.ok) {
-                    return res.text()
-                } else {
-                    return Promise.reject(`Http error: ${res.status}`);
-                    //lub rzucając błąd
-                    //throw new Error(`Http error: ${res.status}`);
-                }
-            })
-            .then(res => {
-                console.log(res)
-                return res;
-            })
-            .catch(error => {
-                console.error(error)
-            });
-
-    }
 
 }
 

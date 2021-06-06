@@ -35,6 +35,8 @@ public class PostController {
         modelMap.addAttribute("post", post);
         postService.save(post);
         modelMap.addAttribute("place", place);
+        place.setTimeAvg(post.getTime());
+        place.setRateAvg(post.getRate());
         placeService.save(place);
         return "post-added";
     }
