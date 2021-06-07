@@ -25,7 +25,10 @@ public class IndexController {
     }
 
     @GetMapping("/hhu")
-    public String index() {
+    public String index(ModelMap modelMap) {
+        modelMap.addAttribute("place", new Place());
+        modelMap.addAttribute("post", new Post());
+        modelMap.addAttribute("places", placeService.findAll());
         return "index";
     }
 
