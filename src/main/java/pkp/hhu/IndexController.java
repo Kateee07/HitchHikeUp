@@ -46,11 +46,11 @@ public class IndexController {
         postService.save(post);
         modelMap.addAttribute("place", place);
         placeService.save(place);
-        return "post-added";
+        return "redirect:/";
     }
 
     @GetMapping("/after-login")
     public String afterLogin() {
-        return "after-login";
+        return "redirect:/";
     }
 }

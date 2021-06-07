@@ -23,7 +23,6 @@ public class PostController {
     }
 
     @GetMapping
-
     public String getPostForm(ModelMap modelMap) {
         modelMap.addAttribute("place", new Place());
         modelMap.addAttribute("post", new Post());
@@ -38,7 +37,7 @@ public class PostController {
         place.setTimeAvg(post.getTime());
         place.setRateAvg(post.getRate());
         placeService.save(place);
-        return "post-added";
+        return "redirect:/";
     }
 
 

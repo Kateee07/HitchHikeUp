@@ -66,18 +66,16 @@
 
 <div id="map"></div>
 
-<div id="postForm">
-    <h1> Add new post </h1>
+<div id="postForm" class="hidden">
     <form th:action="@{/post}" th:method="post" th:autocomplete="off">
         <div>
             <label> Name: <input type="text" th:field="*{place.name}"></label>
         </div>
-        <div>
-            <label> Latitude: <input type="text" th:field="${place.lat}"> </label>
-        </div>
-        <div>
-            <label> Longitude: <input type="text" th:field="*{place.lng}"> </label>
-        </div>
+
+        <!-- Auto wypelnienie wspolrzednymi z klikniecia na mapie -->
+        <input type="hidden" class="form-control" id="latitude" th:field="${place.lat}">
+        <input type="hidden" class="form-control" id="longitude" th:field="*{place.lng}">
+
         <div>
             <label>Direction </label>
             <select name="Direction" th:field="*{place.direction}">
@@ -90,9 +88,6 @@
                 <option value="SE">SE</option>
                 <option value="NE">NE</option>
             </select>
-        </div>
-        <div>
-            <label>Description: <input type="text" th:field="*{place.description}"></label>
         </div>
         <div class="form-group row">
             <label for="description" class="col-sm-2 col-form-label" th:style="'background-color: white'">
@@ -129,11 +124,11 @@
                 <input type="text" class="form-control" id="comment" th:field="*{post.comment}">
             </div>
         </div>
-        <input type="submit" value="Add post" class="btn-primary">
+        <input type="submit" value="Add post" class="align-self-center btn-primary">
     </form>
 </div>
 <script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByTO8qyZh8RrVO61nvhjaKL7O1bdlVqx4&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
 </script>
 <script th:inline="javascript"> var locationsList = [[${places}]]; </script>
 <!-- deklaracja zmiennej globalnej - wartość pobierana z indexcontroller-->
