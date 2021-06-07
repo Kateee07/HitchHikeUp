@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Place detalis</title>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.6.0-1/css/bootstrap.css} "/>
+    <link th:rel="stylesheet" th:href="@{styles/map.css} "/>
+</head>
+<body>
+
+<div class="bg-image" id="all-page" style="background-image:url('http://grzegorzczekala.pl/wp-content/uploads/2019/06/cov-podr%C3%B3%C5%BCe-autostop-atlas-green.jpg');
+    height:100%; background-position: center; background-repeat: no-repeat; background-size: cover;">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">HitchHikeUp</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{/hhu}">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div>
+        <ul class="list-group list-group-flush">
+            <li>
+                <ol class="list-group-item-dark" th:each="post: ${posts}">
+                    <li th:text="${post.getComment()}"></li>
+                    <li th:text="${post.getRate()}"></li>
+                    <li th:text="${post.getTime()}"></li>
+                    <li th:text="${post.getDate()}"></li>
+                </ol>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+</body>
+</html>

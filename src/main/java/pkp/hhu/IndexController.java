@@ -14,6 +14,7 @@ import pkp.hhu.post.PostService;
 
 import java.util.List;
 
+
 @Controller
 public class IndexController {
     private PostService postService;
@@ -39,6 +40,7 @@ public class IndexController {
         modelMap.addAttribute("places", placeService.findAll());
         return "index";
     }
+
 
     @PostMapping
     public String addPost(ModelMap modelMap, Post post, Place place, BindingResult bindingResult) {
