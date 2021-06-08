@@ -15,6 +15,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/place")
 public class PlaceController {
+
     private PlaceService placeService;
     private PostService postService;
 
@@ -22,5 +23,12 @@ public class PlaceController {
         this.placeService = placeService;
         this.postService = postService;
     }
+
+    @GetMapping("/delete/{id}")
+    public String deletePlace(@RequestParam Integer placeId, @PathVariable String id) {
+        placeService.deleteById(placeId);
+        return "redirect:/";
+    }
+
 
 }

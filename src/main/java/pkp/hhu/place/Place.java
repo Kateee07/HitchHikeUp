@@ -1,7 +1,11 @@
 package pkp.hhu.place;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.util.Arrays;
 
 @Entity
 @Table(name="places")
@@ -11,17 +15,22 @@ public class Place {
     private Integer id;
     @Size(max=255, message="Maksymalnie {max} znaków.")
     private String name;
-    private double lat; //szerokość
-    private double lng; //długość
+    @Column(precision=9, scale=6, columnDefinition = "DECIMAL(9,6)")
+  //  @Digits(integer = 9 /*precision*/, fraction = 6 /*scale*/)
+    private BigDecimal lat; //szerokość
+    @Column(precision=9, scale=6, columnDefinition = "DECIMAL(9,6)")
+   // @Digits(integer = 9 /*precision*/, fraction = 6 /*scale*/)
+    private BigDecimal lng; //długość
     @Size(max=2, message="Maksymalnie {max} znaki. Kierunek określ kierunkami geograficznymi N S W E lub ich połączeniem np NW")
     private String direction;
-    private double rateAvg;
+    private float rateAvg;
     private int timeAvg;
     @Size(max=255, message="Maksymalnie {max} znaków.")
     private String description;
-    private String photo;
+    @Lob
+    private byte[] photo;
 
-    public Place(String name, float lat, float lng, String direction, double rateAvg, int timeAvg, String description, String photo) {
+    public Place(String name, BigDecimal lat, BigDecimal lng, String direction, float rateAvg, int timeAvg, String description, byte[] photo) {
         this.name = name;
         this.lat = lat;
         this.lng = lng;
@@ -30,12 +39,6 @@ public class Place {
         this.timeAvg = timeAvg;
         this.description = description;
         this.photo = photo;
-    }
-
-    public Place(float lat, float lng) {
-        this.lat = lat;
-        this.lng = lng;
-
     }
 
     public Place() {
@@ -49,11 +52,11 @@ public class Place {
         return name;
     }
 
-    public double getLat() {
+    public BigDecimal getLat() {
         return lat;
     }
 
-    public double getLng() {
+    public BigDecimal getLng() {
         return lng;
     }
 
@@ -61,7 +64,7 @@ public class Place {
         return direction;
     }
 
-    public double getRateAvg() {
+    public float getRateAvg() {
         return rateAvg;
     }
 
@@ -73,7 +76,7 @@ public class Place {
         return description;
     }
 
-    public String getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
@@ -81,11 +84,11 @@ public class Place {
         this.name = name;
     }
 
-    public void setLat(double lat) {
+    public void setLat(BigDecimal lat) {
         this.lat = lat;
     }
 
-    public void setLng(double lng) {
+    public void setLng(BigDecimal lng) {
         this.lng = lng;
     }
 
@@ -93,7 +96,7 @@ public class Place {
         this.direction = direction;
     }
 
-    public void setRateAvg(double rateAvg) {
+    public void setRateAvg(float rateAvg) {
         this.rateAvg = rateAvg;
     }
 
@@ -105,7 +108,7 @@ public class Place {
         this.description = description;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 
@@ -113,14 +116,14 @@ public class Place {
     public String toString() {
         return "Place{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + name +
                 ", lat=" + lat +
                 ", lng=" + lng +
-                ", direction='" + direction + '\'' +
+                ", direction='" + direction +
                 ", rateAvg=" + rateAvg +
                 ", timeAvg=" + timeAvg +
-                ", description='" + description + '\'' +
-                ", photo='" + photo + '\'' +
+                ", description='" + description +
+                ", image=" + Arrays.toString(photo) +
                 '}';
     }
 }
