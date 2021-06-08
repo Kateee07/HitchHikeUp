@@ -2,13 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New post added</title>
+    <title>Place detalis</title>
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.6.0-1/css/bootstrap.css} "/>
     <link th:rel="stylesheet" th:href="@{styles/map.css} "/>
 </head>
 <body>
+
 <div class="bg-image" id="all-page" style="background-image:url('http://grzegorzczekala.pl/wp-content/uploads/2019/06/cov-podr%C3%B3%C5%BCe-autostop-atlas-green.jpg');
-    height:100vh; background-position: center; background-repeat: no-repeat; background-size: cover;">
+    height:100%; background-position: center; background-repeat: no-repeat; background-size: cover;">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container">
@@ -35,9 +36,19 @@
             </div>
         </div>
     </nav>
-    <h1 style="color: white; font-family: Calibri"> New post added
-    </h1><strong th:text="${place.getName()}"></strong>
-<a th:href="@{/hhu}">Back</a>
+    <div>
+        <ul class="list-group list-group-flush">
+            <li>
+                <ol class="list-group-item-dark" th:each="post: ${posts}">
+                    <li th:text="${post.getComment()}"></li>
+                    <li th:text="${post.getRate()}"></li>
+                    <li th:text="${post.getTime()}"></li>
+                    <li th:text="${post.getDate()}"></li>
+                </ol>
+            </li>
+        </ul>
+    </div>
+</div>
 </div>
 </body>
 </html>

@@ -6,6 +6,11 @@
 //import MarkerClusterer from '@googlemaps/markerclustererplus';
 let map, infoWindow;
 
+var addPost = document.createElement("button");
+addPost.textContent = "Add post";
+addPost.classList.add("addPost");
+addPost.classList.add("btn-success");
+
 function initMap(listener) {
 
     const warsaw = {lat: 52.237049, lng: 21.017532};
@@ -31,8 +36,8 @@ function initMap(listener) {
         var lngL = oneLocation.lng;
         var avgTime = oneLocation.timeAvg;
         var latLng = {lat: latL, lng: lngL};
-        //locations = locations + latLng + ',';
-        placeMarker(map, latLng, avgTime);
+        //locations = locations + latLng + ',';     Nie wiem czy to dobrze zadziala w clusterach.
+        placeMarker(map, latLng, avgTime, oneLocation);
         //html: document.getElementById("infoForm")
 
     };
@@ -87,23 +92,45 @@ function initMap(listener) {
 
         google.maps.event.addListener(map, 'click', function (event) {
             placeNewMarker(map, event.latLng);
-            console.log(event.latLng);
         }, {once: true});
 
     }, {once: true})
 
-    function placeMarker(map, location, avgTime) {
+    function placeMarker(map, location, avgTime, place) {
         var marker = new google.maps.Marker({
             position: location,
             map: map,
             icon: changeMarkerColour(avgTime)
         });
+        var postsUrl = 'place?id=' + place.id;
+        var editUrl = 'place/edit/' + place.id;
+        var deleteUrl = 'place/delete/' + place.id;
+
+        var markerInfo = '<h3 class="text-center mb-3">' + place.name + '</h3>' +
+            '<p class="text-center">' + place.description + '</p>' +
+            '<img src="images/4.jpg" class="float-right" style="max-width: 140px" alt="Photo of the place">' +
+            '<p>Average time: ' + place.timeAvg +
+            '<br>Average rate: ' + place.rateAvg +
+            '<br>' + addPost +
+            '<br><a href="' + postsUrl + '"><input type="button" value="Comments" class="btn-info"></a>' +
+            '<br><a href="' + editUrl + '"><input type="button" value="Edit" class="btn-warning"></a>' +
+            '<a href="' + deleteUrl + '"><input type="button" value="Delete" class="btn-danger"></a></p>';
+
+        var addPostToPlaceForm = '<form th:action="@{/post}" th:method="post" th:autocomplete="off">' +
+            document.getElementById("onlyPostForm") + '<input type="hidden" class="form-control" id="place"' +
+            ' th:field="*{post.place}"></form>'
+
         var infowindow = new google.maps.InfoWindow({
-            content: 'Latitude: ' + location.lat +
-                '<br>Longitude: ' + location.lng
+            content: markerInfo,
+            maxWidth: 300
         });
+
         marker.addListener("click", () => {
             infowindow.open(map, marker);
+            addPost.addEventListener("click", function() {
+                document.getElementById("place")
+                infoWindow.setContent(addPostToPlaceForm);
+            });
         });
 
     }

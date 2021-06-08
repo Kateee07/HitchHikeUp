@@ -14,6 +14,7 @@ import pkp.hhu.post.PostService;
 
 import java.util.List;
 
+
 @Controller
 public class IndexController {
     private PostService postService;
@@ -40,17 +41,18 @@ public class IndexController {
         return "index";
     }
 
+
     @PostMapping
     public String addPost(ModelMap modelMap, Post post, Place place, BindingResult bindingResult) {
         modelMap.addAttribute("post", post);
         postService.save(post);
         modelMap.addAttribute("place", place);
         placeService.save(place);
-        return "post-added";
+        return "redirect:/";
     }
 
     @GetMapping("/after-login")
     public String afterLogin() {
-        return "after-login";
+        return "redirect:/";
     }
 }

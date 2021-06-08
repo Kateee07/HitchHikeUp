@@ -56,9 +56,9 @@
                                    th:name="password"/>
                         </div>
                     </div>
-                    <button class="btn btn-primary" type="submit">Zaloguj</button>
+                    <button class="btn btn-primary" type="submit">Login</button>
                 </form>
-                <a th:href="@{/register}" class="nav-link">Registration </a>
+                <a th:href="@{/register}" class="nav-link">Register</a>
             </div>
         </div>
     </div>
@@ -68,32 +68,26 @@
 
 <div id="postForm" class="hidden">
     <form th:action="@{/post}" th:method="post" th:autocomplete="off">
-        <div class="form-group row">
-            <label for="username" class="col-sm-2 col-form-label" th:style="'background-color: white'">Name:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="name" th:field="*{place.name}">
-            </div>
+        <div>
+            <label> Name: <input type="text" th:field="*{place.name}"></label>
         </div>
 
         <!-- Auto wypelnienie wspolrzednymi z klikniecia na mapie -->
         <input type="hidden" class="form-control" id="latitude" th:field="${place.lat}">
         <input type="hidden" class="form-control" id="longitude" th:field="*{place.lng}">
 
-        <div class="form-group row">
-            <label for="direction" class="col-form-label col-sm-2" th:style="'background-color: white'">
-                Direction: </label>
-            <div class="col-sm-4">
-                <select name="Direction" class="form-control" id="direction" th:field="*{place.direction}">
-                    <option value="N">N</option>
-                    <option value="S">S</option>
-                    <option value="W">W</option>
-                    <option value="E">E</option>
-                    <option value="SW">SW</option>
-                    <option value="NW">NW</option>
-                    <option value="SE">SE</option>
-                    <option value="NE">NE</option>
-                </select>
-            </div>
+        <div>
+            <label>Direction </label>
+            <select name="Direction" th:field="*{place.direction}">
+                <option value="N">N</option>
+                <option value="S">S</option>
+                <option value="W">W</option>
+                <option value="E">E</option>
+                <option value="SW">SW</option>
+                <option value="NW">NW</option>
+                <option value="SE">SE</option>
+                <option value="NE">NE</option>
+            </select>
         </div>
         <div class="form-group row">
             <label for="description" class="col-sm-2 col-form-label" th:style="'background-color: white'">
@@ -109,32 +103,34 @@
                 <input type="file" class="form-control" id="photo" th:field="*{place.photo}">
             </div>
         </div>
-        <div class="form-group row">
-            <label for="rate" class="col-form-label col-sm-2" th:style="'background-color: white'"> Rate
-                (max 10): </label>
-            <div class="col-sm-4">
-                <input type="number" class="form-control" id="rate" th:max="10" th:field="*{post.rate}">
+        <div id="onlyPostForm">
+            <div class="form-group row">
+                <label for="rate" class="col-form-label col-sm-2" th:style="'background-color: white'"> Rate
+                    (max 10): </label>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control" id="rate" th:max="10" th:field="*{post.rate}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="time" class="col-sm-2 col-form-label" th:style="'background-color: white'">
+                    Time: </label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="time" th:field="*{post.time}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="comment" class="col-form-label col-sm-2" th:style="'background-color: white'">
+                    Comment: </label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="comment" th:field="*{post.comment}">
+                </div>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="time" class="col-sm-2 col-form-label" th:style="'background-color: white'">
-                Time: </label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="time" th:field="*{post.time}">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="comment" class="col-form-label col-sm-2" th:style="'background-color: white'">
-                Comment: </label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="comment" th:field="*{post.comment}">
-            </div>
-        </div>
-        <input type="submit" value="Add post" class="btn-primary">
+        <input type="submit" value="Add post" class="align-self-center btn-primary">
     </form>
 </div>
 <script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByTO8qyZh8RrVO61nvhjaKL7O1bdlVqx4&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
 </script>
 <script th:inline="javascript"> var locationsList = [[${places}]]; </script>
 <!-- deklaracja zmiennej globalnej - wartość pobierana z indexcontroller-->

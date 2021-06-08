@@ -43,6 +43,6 @@ public class RegisterController {
             return "register";
 
         }
-        return "register-result";
+        return "redirect:/";
     }
 }
