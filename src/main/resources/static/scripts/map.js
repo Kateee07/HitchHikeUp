@@ -6,6 +6,11 @@
 //import MarkerClusterer from '@googlemaps/markerclustererplus';
 let map, infoWindow;
 
+var addPost = document.createElement("button");
+addPost.textContent = "Add post";
+addPost.classList.add("addPost");
+addPost.classList.add("btn-success");
+
 function initMap(listener) {
 
     const warsaw = {lat: 52.237049, lng: 21.017532};
@@ -87,7 +92,6 @@ function initMap(listener) {
 
         google.maps.event.addListener(map, 'click', function (event) {
             placeNewMarker(map, event.latLng);
-            console.log(event.latLng);
         }, {once: true});
 
     }, {once: true})
@@ -98,7 +102,6 @@ function initMap(listener) {
             map: map,
             icon: changeMarkerColour(avgTime)
         });
-        var addPostUrl = '/post/add/' + place.id;
         var postsUrl = 'place?id=' + place.id;
         var editUrl = 'place/edit/' + place.id;
         var deleteUrl = 'place/delete/' + place.id;
@@ -108,10 +111,14 @@ function initMap(listener) {
             '<img src="images/4.jpg" class="float-right" style="max-width: 140px" alt="Photo of the place">' +
             '<p>Average time: ' + place.timeAvg +
             '<br>Average rate: ' + place.rateAvg +
-            '<br><a href="' + addPostUrl + '"><input type="button" value="Add post" class="btn-success"></a>' +
+            '<br>' + addPost +
             '<br><a href="' + postsUrl + '"><input type="button" value="Comments" class="btn-info"></a>' +
             '<br><a href="' + editUrl + '"><input type="button" value="Edit" class="btn-warning"></a>' +
             '<a href="' + deleteUrl + '"><input type="button" value="Delete" class="btn-danger"></a></p>';
+
+        var addPostToPlaceForm = '<form th:action="@{/post}" th:method="post" th:autocomplete="off">' +
+            document.getElementById("onlyPostForm") + '<input type="hidden" class="form-control" id="place"' +
+            ' th:field="*{post.place}"></form>'
 
         var infowindow = new google.maps.InfoWindow({
             content: markerInfo,
@@ -120,6 +127,10 @@ function initMap(listener) {
 
         marker.addListener("click", () => {
             infowindow.open(map, marker);
+            addPost.addEventListener("click", function() {
+                document.getElementById("place")
+                infoWindow.setContent(addPostToPlaceForm);
+            });
         });
 
     }
