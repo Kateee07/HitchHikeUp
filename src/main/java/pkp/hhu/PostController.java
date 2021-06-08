@@ -19,39 +19,40 @@ import pkp.hhu.user.UserService;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import java.util.List;
+
 @Controller
 public class PostController {
     private PostService postService;
     private PlaceService placeService;
-
     public PostController(PostService postService, PlaceService placeService) {
         this.postService = postService;
         this.placeService = placeService;
     }
-
     @GetMapping("/post")
     public String getPostForm(ModelMap modelMap) {
         modelMap.addAttribute("place", new Place());
         modelMap.addAttribute("post", new Post());
         return "post";
     }
-
     @PostMapping("/post")
-    public String addPostWithPlace(ModelMap modelMap, Post post, Place place, BindingResult bindingResult) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+    public String addPost(ModelMap modelMap, Post post, Place place, BindingResult bindingResult) {
         modelMap.addAttribute("post", post);
-        post.setUser(user);
-        post.setDate(LocalDate.now());
-        post.setPlace(place);
+        postService.save(post);
         modelMap.addAttribute("place", place);
         place.setTimeAvg(post.getTime());
         place.setRateAvg(post.getRate());
         placeService.save(place);
-        postService.save(post);
-        return "redirect:/";
+        return "post-added";
     }
 
+    @GetMapping("/place")
+    public String showPostbyId(@RequestParam(required = false) Integer id, ModelMap modelMap) {
+
+        List<Post> posts = postService.findByPlaceId(id);
+        modelMap.addAttribute("posts", posts);
+        return "place";
+    }
 
     @GetMapping("/post/coordinates")
     public String getCoordinatesPostForm(ModelMap modelMap) {
@@ -59,7 +60,6 @@ public class PostController {
         modelMap.addAttribute("post", new Post());
         return "post";
     }
-
     @PostMapping("/post/coordinates")
     public String postCoordinatesPostForm(ModelMap modelMap, @RequestBody @Validated Place place, BindingResult bindingResult) {
         modelMap.addAttribute("place", place);

@@ -36,6 +36,7 @@ public class Post {
     public Post() {
     }
 
+
     public User getUser() {
         return user;
     }
@@ -86,14 +87,12 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", user=" + user +
-                ", place=" + place +
-                ", rate=" + rate +
-                ", time=" + time +
-                ", comment='" + comment + '\'' +
-                ", date=" + date +
+        return
+                "\n User is" + user +
+                "\n -> rate:" + rate +
+                "\n ->time:" + time +
+                "\n ->comment:'" + comment + '\'' +
+                "\n ->date:" + date +
                 '}';
     }
 
