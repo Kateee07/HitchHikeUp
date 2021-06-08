@@ -16,20 +16,13 @@ import java.util.List;
 
 @Controller
 public class IndexController {
+
     private PostService postService;
     private PlaceService placeService;
 
     public IndexController(PostService postService, PlaceService placeService) {
         this.postService = postService;
         this.placeService = placeService;
-    }
-
-    @GetMapping("/hhu")
-    public String index(ModelMap modelMap) {
-        modelMap.addAttribute("place", new Place());
-        modelMap.addAttribute("post", new Post());
-        modelMap.addAttribute("places", placeService.findAll());
-        return "index";
     }
 
     @GetMapping
@@ -46,11 +39,11 @@ public class IndexController {
         postService.save(post);
         modelMap.addAttribute("place", place);
         placeService.save(place);
-        return "post-added";
+        return "redirect:/";
     }
 
     @GetMapping("/after-login")
     public String afterLogin() {
-        return "after-login";
+        return "redirect:/";
     }
 }

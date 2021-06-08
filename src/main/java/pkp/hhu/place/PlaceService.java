@@ -3,6 +3,7 @@ package pkp.hhu.place;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlaceService {
@@ -16,5 +17,14 @@ public class PlaceService {
 
     public void save(Place place) {
         placeRepository.save(place);
+    }
+
+    public void deleteById(Integer id) {
+        placeRepository.deleteById(id);
+    }
+
+    public Optional<Place> getPlaceById(Integer id) {
+        return placeRepository.findById(id);
+
     }
 }
