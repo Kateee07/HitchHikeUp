@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -16,6 +19,13 @@ import pkp.hhu.place.Place;
 import pkp.hhu.place.PlaceService;
 import pkp.hhu.post.Post;
 import pkp.hhu.post.PostService;
+import pkp.hhu.user.User;
+import pkp.hhu.user.UserService;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +36,7 @@ import java.math.BigDecimal;
 import java.nio.file.Paths;
 
 @Controller
+@RequestMapping("/post")
 public class PostController {
     @Value("${file.uploadDir}")
     private String uploadFolder;
@@ -128,6 +139,12 @@ public class PostController {
             return "redirect:/";
         }
     }
+    @GetMapping("/place")
+    public String showPostbyId(@RequestParam(required = false) Integer id, ModelMap modelMap) {
+        List<Post> posts = postService.findByPlaceId(id);
+        modelMap.addAttribute("posts", posts);
+        return "place";
+    }
 
     @GetMapping("/post/coordinates")
     public String getCoordinatesPostForm(ModelMap modelMap) {
@@ -142,5 +159,5 @@ public class PostController {
         modelMap.addAttribute("post", new Post());
         return "post";
     }
-}
 
+}
