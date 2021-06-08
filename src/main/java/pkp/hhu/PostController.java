@@ -5,38 +5,33 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import pkp.hhu.place.Place;
 import pkp.hhu.place.PlaceService;
 import pkp.hhu.post.Post;
 import pkp.hhu.post.PostService;
 import pkp.hhu.user.User;
-import pkp.hhu.user.UserService;
-
-import java.time.LocalDate;
-import java.util.Optional;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.List;
 
 @Controller
-@RequestMapping("/post")
 public class PostController {
     @Value("${file.uploadDir}")
     private String uploadFolder;
@@ -58,24 +53,10 @@ public class PostController {
         return "post";
     }
 
-//    @PostMapping("/post")
-//    public String addPlaceAndPost(ModelMap modelMap, Post post, Place place, BindingResult bindingResult) {
-//
-//        modelMap.addAttribute("post", post);
-//        postService.save(post);
-//        modelMap.addAttribute("place", place);
-//        place.setTimeAvg(post.getTime());
-//        place.setRateAvg(post.getRate());
-//        placeService.save(place);
-//        return "post-added";
-//    }
-
     @PostMapping("/post")
     public String createProduct(@RequestParam("name") String placeName, @RequestParam("lat") BigDecimal placeLat, @RequestParam("lng") BigDecimal placeLng,
                                 @RequestParam("direction") String placeDirection, @RequestParam("description") String placeDescription, Post post,
                                 ModelMap modelMap, HttpServletRequest request, final @RequestParam("photo") MultipartFile photo) {
-
-        modelMap.addAttribute("post", new Post());
 
         try {
             //ustalamy jaka jest ścieżka to folderu przechowywania plików lokalnie (przed wysłaniem do mysql)
@@ -85,20 +66,13 @@ public class PostController {
             String fileName = photo.getOriginalFilename();
             String filePath = Paths.get(uploadDirectory, fileName).toString();
             log.info("FileName: " + photo.getOriginalFilename());
-            log.info("FilePath: " + filePath);
             if (fileName == null || fileName.contains("..")) {
                 // modelMap.addAttribute("invalid", "Sorry! Filename contains invalid path sequence \" + fileName");
-                log.info("Sorry! Filename contains invalid path sequence ");
+                log.warn("Sorry! Filename contains invalid path sequence!");
                 return "redirect:/";
             }
             String[] names = placeName.split(",");
             String[] descriptions = placeDescription.split(",");
-
-            log.info("Name: " + names[0] + " " + filePath);
-            log.info("Lat: " + placeLat);
-            log.info("Lng: " + placeLng);
-            log.info("Direction: " + placeDirection);
-            log.info("Description: " + descriptions[0]);
 
             try {  //sprawdzamy czy folder do pobrania tymczasowego lokalnie istnieje
                 File dir = new File(uploadDirectory);
@@ -110,10 +84,16 @@ public class PostController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
                 stream.write(photo.getBytes());
                 stream.close();
-            } catch (Exception e) {
-                log.info("in catch");
-                e.printStackTrace();
+            } catch (FileNotFoundException fileNotFoundException) {
+                log.info("Nie załączono pliku! " + fileNotFoundException);
+            } catch (Exception exception) {
+                log.error("Exception: " + exception);
+                exception.printStackTrace();
             }
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            modelMap.addAttribute("post", new Post());
+
             byte[] imageData = photo.getBytes();  //przypis odebrany strumień/plik do zmiennej image data (tablica bajtów)
             Place place = new Place();
             place.setName(names[0]);
@@ -127,10 +107,14 @@ public class PostController {
             place.setRateAvg(post.getRate());
 
             placeService.save(place);
+
+            post.setUser(user);
+            post.setDate(LocalDate.now());
+            post.setPlace(place);
+
             postService.save(post);
 
-            log.info("HttpStatus===" + new ResponseEntity<>(HttpStatus.OK));
-            log.info("Product Saved With File - " + fileName);
+            log.info("Place Saved. Attached photo: >>>" + fileName + "<<<. No photo if field empty.");
             return "redirect:/";
 
         } catch (Exception e) {
@@ -139,6 +123,7 @@ public class PostController {
             return "redirect:/";
         }
     }
+
     @GetMapping("/place")
     public String showPostbyId(@RequestParam(required = false) Integer id, ModelMap modelMap) {
         List<Post> posts = postService.findByPlaceId(id);
