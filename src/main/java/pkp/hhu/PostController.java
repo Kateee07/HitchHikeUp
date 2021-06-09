@@ -36,7 +36,6 @@ import java.math.BigDecimal;
 import java.nio.file.Paths;
 
 @Controller
-@RequestMapping("/post")
 public class PostController {
     @Value("${file.uploadDir}")
     private String uploadFolder;
@@ -55,28 +54,13 @@ public class PostController {
     public String getPostForm(ModelMap modelMap) {
         modelMap.addAttribute("place", new Place());
         modelMap.addAttribute("post", new Post());
-        return "post";
+        return "redirect:/";
     }
-
-//    @PostMapping("/post")
-//    public String addPlaceAndPost(ModelMap modelMap, Post post, Place place, BindingResult bindingResult) {
-//
-//        modelMap.addAttribute("post", post);
-//        postService.save(post);
-//        modelMap.addAttribute("place", place);
-//        place.setTimeAvg(post.getTime());
-//        place.setRateAvg(post.getRate());
-//        placeService.save(place);
-//        return "post-added";
-//    }
 
     @PostMapping("/post")
     public String createProduct(@RequestParam("name") String placeName, @RequestParam("lat") BigDecimal placeLat, @RequestParam("lng") BigDecimal placeLng,
                                 @RequestParam("direction") String placeDirection, @RequestParam("description") String placeDescription, Post post,
                                 ModelMap modelMap, HttpServletRequest request, final @RequestParam("photo") MultipartFile photo) {
-
-        modelMap.addAttribute("post", new Post());
-
         try {
             //ustalamy jaka jest ścieżka to folderu przechowywania plików lokalnie (przed wysłaniem do mysql)
             String uploadDirectory = request.getServletContext().getRealPath(uploadFolder);
@@ -93,13 +77,11 @@ public class PostController {
             }
             String[] names = placeName.split(",");
             String[] descriptions = placeDescription.split(",");
-
             log.info("Name: " + names[0] + " " + filePath);
             log.info("Lat: " + placeLat);
             log.info("Lng: " + placeLng);
             log.info("Direction: " + placeDirection);
             log.info("Description: " + descriptions[0]);
-
             try {  //sprawdzamy czy folder do pobrania tymczasowego lokalnie istnieje
                 File dir = new File(uploadDirectory);
                 if (!dir.exists()) {
@@ -114,6 +96,8 @@ public class PostController {
                 log.info("in catch");
                 e.printStackTrace();
             }
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            modelMap.addAttribute("post", new Post());
             byte[] imageData = photo.getBytes();  //przypis odebrany strumień/plik do zmiennej image data (tablica bajtów)
             Place place = new Place();
             place.setName(names[0]);
@@ -122,17 +106,16 @@ public class PostController {
             place.setLng(placeLng);
             place.setDescription(descriptions[0]);
             place.setDirection(placeDirection);
-
             place.setTimeAvg(post.getTime());
             place.setRateAvg(post.getRate());
-
             placeService.save(place);
+            post.setUser(user);
+            post.setDate(LocalDate.now());
+            post.setPlace(place);
             postService.save(post);
-
             log.info("HttpStatus===" + new ResponseEntity<>(HttpStatus.OK));
             log.info("Product Saved With File - " + fileName);
             return "redirect:/";
-
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Exception: " + e);
@@ -150,14 +133,14 @@ public class PostController {
     public String getCoordinatesPostForm(ModelMap modelMap) {
         modelMap.addAttribute("place", new Place());
         modelMap.addAttribute("post", new Post());
-        return "post";
+        return "redirect:/";
     }
 
     @PostMapping("/post/coordinates")
     public String postCoordinatesPostForm(ModelMap modelMap, @RequestBody @Validated Place place, BindingResult bindingResult) {
         modelMap.addAttribute("place", place);
         modelMap.addAttribute("post", new Post());
-        return "post";
+        return "redirect:/";
     }
 
 }

@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/place")
 public class PlaceController {
 
     private PlaceService placeService;
@@ -24,11 +23,9 @@ public class PlaceController {
         this.postService = postService;
     }
 
-    @GetMapping("/delete/{id}")
-    public String deletePlace(@RequestParam Integer placeId, @PathVariable String id) {
-        placeService.deleteById(placeId);
+    @GetMapping("/place/delete/{id}")
+    public String deletePlace(@PathVariable Integer id) {
+        placeService.deleteById(id);
         return "redirect:/";
     }
-
-
 }

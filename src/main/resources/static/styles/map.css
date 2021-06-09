@@ -18,9 +18,9 @@ body {
     -moz-appearance: none;
     appearance: none;
     background-color: transparent;
-    border: 2px solid #e74c3c;
+    border: 2px solid #362624;
     border-radius: 0.6em;
-    color: #e74c3c;
+    color: #362624;
     cursor: pointer;
     display: -webkit-box;
     display: -webkit-flex;
@@ -41,7 +41,7 @@ body {
     font-weight: 700;
 }
 .custom-map-control-button:hover, .custom-map-control-button:focus {
-    color: #fff;
+    color: #F0AA89;
     outline: 0;
 }
 
@@ -50,7 +50,7 @@ body {
     transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
 }
 .custom-map-control-button:hover {
-    box-shadow: 0 0 40px 40px #e74c3c inset;
+    box-shadow: 0 0 40px 40px #362624 inset;
 }
 
 .hidden {

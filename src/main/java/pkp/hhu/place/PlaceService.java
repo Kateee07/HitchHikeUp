@@ -22,7 +22,6 @@ public class PlaceService {
     public void save(Place place) {
         placeRepository.save(place);
     }
-
     public void deleteById(Integer id) {
         placeRepository.deleteById(id);
     }
@@ -36,6 +35,4 @@ public class PlaceService {
         return placeRepository.findById(id).orElse(null);
     }
 
-
-    public void deleteById(Integer id) { placeRepository.deleteById(id); }
 }
