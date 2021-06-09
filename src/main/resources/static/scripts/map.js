@@ -40,7 +40,8 @@ function initMap(listener) {
         placeMarker(map, latLng, avgTime, oneLocation);
         //html: document.getElementById("infoForm")
 
-    };
+    }
+    ;
 
     //const markerClusterer = new MarkerClusterer(map, locations, {
     //     imagePath:
@@ -105,10 +106,11 @@ function initMap(listener) {
         var postsUrl = 'place?id=' + place.id;
         var editUrl = 'place/edit/' + place.id;
         var deleteUrl = 'place/delete/' + place.id;
+        var showPhotoUrl = '/place/show-photo-by-id/' + place.id;
 
         var markerInfo = '<h3 class="text-center mb-3">' + place.name + '</h3>' +
             '<p class="text-center">' + place.description + '</p>' +
-            '<img src="images/4.jpg" class="float-right" style="max-width: 140px" alt="Photo of the place">' +
+            '<img src="'+ showPhotoUrl +'" class="float-right" style="max-width: 140px" alt="Photo of the place"/>' +
             '<p>Average time: ' + place.timeAvg +
             '<br>Average rate: ' + place.rateAvg +
             '<br>' + addPost +
@@ -127,12 +129,11 @@ function initMap(listener) {
 
         marker.addListener("click", () => {
             infowindow.open(map, marker);
-            addPost.addEventListener("click", function() {
+            addPost.addEventListener("click", function () {
                 document.getElementById("place")
                 infoWindow.setContent(addPostToPlaceForm);
             });
         });
-
     }
 
     function changeMarkerColour(time) {
@@ -145,7 +146,7 @@ function initMap(listener) {
     }
 
     function placeNewMarker(map, location) {
-        if ( marker ) {
+        if (marker) {
             marker.setPosition(location);
         } else {
             marker = new google.maps.Marker({
