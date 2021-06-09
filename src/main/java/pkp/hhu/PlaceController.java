@@ -32,7 +32,7 @@ public class PlaceController {
     }
 
 
-    @GetMapping("/show-photo-by-id/{id}")
+    @GetMapping("/place/show-photo-by-id/{id}")
     @ResponseBody
     void showImage(@PathVariable("id") Integer id, HttpServletResponse response, Optional<Place> place) {
 
