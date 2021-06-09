@@ -50,7 +50,7 @@ public class PostController {
     public String getPostForm(ModelMap modelMap) {
         modelMap.addAttribute("place", new Place());
         modelMap.addAttribute("post", new Post());
-        return "post";
+        return "redirect:/";
     }
 
     @PostMapping("/post")
@@ -102,10 +102,8 @@ public class PostController {
             place.setLng(placeLng);
             place.setDescription(descriptions[0]);
             place.setDirection(placeDirection);
-
             place.setTimeAvg(post.getTime());
             place.setRateAvg(post.getRate());
-
             placeService.save(place);
 
             post.setUser(user);
@@ -115,8 +113,8 @@ public class PostController {
             postService.save(post);
 
             log.info("Place Saved. Attached photo: >>>" + fileName + "<<<. No photo if field empty.");
+          
             return "redirect:/";
-
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Exception: " + e);
@@ -135,14 +133,14 @@ public class PostController {
     public String getCoordinatesPostForm(ModelMap modelMap) {
         modelMap.addAttribute("place", new Place());
         modelMap.addAttribute("post", new Post());
-        return "post";
+        return "redirect:/";
     }
 
     @PostMapping("/post/coordinates")
     public String postCoordinatesPostForm(ModelMap modelMap, @RequestBody @Validated Place place, BindingResult bindingResult) {
         modelMap.addAttribute("place", place);
         modelMap.addAttribute("post", new Post());
-        return "post";
+        return "redirect:/";
     }
 
 }

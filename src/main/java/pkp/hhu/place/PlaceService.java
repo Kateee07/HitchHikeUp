@@ -23,14 +23,16 @@ public class PlaceService {
         placeRepository.save(place);
     }
 
+    public void deleteById(Integer id) {
+        placeRepository.deleteById(id);
+    }
+
     public Optional<Place> getPlaceById(Integer id) {
         return placeRepository.findById(id);
-
     }
 
     public Place findById(Integer id){
         return placeRepository.findById(id).orElse(null);
     }
 
-    public void deleteById(Integer id) { placeRepository.deleteById(id); }
 }

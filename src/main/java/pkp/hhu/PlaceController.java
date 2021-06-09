@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/place")
 public class PlaceController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -26,11 +25,12 @@ public class PlaceController {
         this.postService = postService;
     }
 
-    @GetMapping("/delete/{id}")
-    public String deletePlace(@RequestParam Integer placeId, @PathVariable String id) {
-        placeService.deleteById(placeId);
+    @GetMapping("/place/delete/{id}")
+    public String deletePlace(@PathVariable Integer id) {
+        placeService.deleteById(id);
         return "redirect:/";
     }
+
 
     @GetMapping("/show-photo-by-id/{id}")
     @ResponseBody
