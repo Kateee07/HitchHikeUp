@@ -136,10 +136,14 @@
     </form>
 </div>
 <script async
-        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByTO8qyZh8RrVO61nvhjaKL7O1bdlVqx4&callback=initMap">
 </script>
 <script th:inline="javascript"> var locationsList = [[${places}]]; </script>
+<!--<script th:inline="javascript"> var oneLocation= [[${place}]]; </script>-->
+
 <!-- deklaracja zmiennej globalnej - wartość pobierana z indexcontroller-->
 <script src="scripts/map.js"></script>
+<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
+
 </body>
 </html>
