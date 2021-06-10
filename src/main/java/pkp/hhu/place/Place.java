@@ -1,31 +1,29 @@
 package pkp.hhu.place;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.util.Arrays;
 
 @Entity
-@Table(name="places")
+@Table(name = "places")
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Size(max=255, message="Maksymalnie {max} znaków.")
+    @Size(max = 255, message = "Maksymalnie {max} znaków.")
     private String name;
-    @Column(precision=9, scale=6, columnDefinition = "DECIMAL(9,6)")
-  //  @Digits(integer = 9 /*precision*/, fraction = 6 /*scale*/)
+    @Column(precision = 9, scale = 6, columnDefinition = "DECIMAL(9,6)")
+    //  @Digits(integer = 9 /*precision*/, fraction = 6 /*scale*/)
     private BigDecimal lat; //szerokość
-    @Column(precision=9, scale=6, columnDefinition = "DECIMAL(9,6)")
-   // @Digits(integer = 9 /*precision*/, fraction = 6 /*scale*/)
+    @Column(precision = 9, scale = 6, columnDefinition = "DECIMAL(9,6)")
+    // @Digits(integer = 9 /*precision*/, fraction = 6 /*scale*/)
     private BigDecimal lng; //długość
-    @Size(max=2, message="Maksymalnie {max} znaki. Kierunek określ kierunkami geograficznymi N S W E lub ich połączeniem np NW")
+    @Size(max = 2, message = "Maksymalnie {max} znaki. Kierunek określ kierunkami geograficznymi N S W E lub ich połączeniem np NW")
     private String direction;
     private float rateAvg;
     private int timeAvg;
-    @Size(max=255, message="Maksymalnie {max} znaków.")
+    @Size(max = 255, message = "Maksymalnie {max} znaków.")
     private String description;
     @Lob
     private byte[] photo;
@@ -78,6 +76,10 @@ public class Place {
 
     public byte[] getPhoto() {
         return photo;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setName(String name) {

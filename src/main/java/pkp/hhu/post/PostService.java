@@ -16,14 +16,37 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public List<Post> findAll(){
+    public List<Post> findAll() {
         return postRepository.findAll();
     }
 
-    public Post findById(Integer id){
+    public Post findById(Integer id) {
         return postRepository.findById(id).orElse(null);
     }
-    public List<Post> findByPlaceId(Integer id){
+
+    public List<Post> findByPlaceId(Integer id) {
         return postRepository.findAllByPlaceId(id);
+    }
+
+    public float avgPlaceRate(Integer id) {
+        List<Post> allPostsByPlace = findByPlaceId(id);
+        float rateAvg = 0;
+        int sum = 0;
+        for (Post post : allPostsByPlace) {
+            sum += post.getRate();
+        }
+        rateAvg = (float) sum / allPostsByPlace.size();
+        return rateAvg;
+    }
+
+    public int avgPlaceTime(Integer id) {
+        List<Post> allPostsByPlace = findByPlaceId(id);
+        int timeAvg = 0;
+        int sum = 0;
+        for (Post post : allPostsByPlace) {
+            sum += post.getTime();
+        }
+        timeAvg = sum / allPostsByPlace.size();
+        return timeAvg;
     }
 }
