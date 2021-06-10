@@ -4,16 +4,13 @@
 // locate you.
 
 let map, infoWindow;
+var marker;
 
 const greenMarker = 'https://maps.google.com/mapfiles/ms/icons/green-dot.png';
 const yellowMarker = 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
 const blueMarker = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
 const redMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
 
-var addPost = document.createElement("button");
-addPost.textContent = "Add post";
-addPost.classList.add("addPost");
-addPost.classList.add("btn-success");
 
 function initMap(listener) {
 
@@ -106,14 +103,11 @@ function placeMarker(location, avgTime, place) {
         '<img src="' + showPhotoUrl + '" class="float-right" style="max-width: 140px" alt="Photo of the place"/>' +
         '<p>Average time: ' + place.timeAvg +
         '<br>Average rate: ' + place.rateAvg +
-        '<br>' + addPost +
+        '<br><button class="addPost btn-success">Add post</button>' +
         '<br><a href="' + postsUrl + '"><input type="button" value="Comments" class="btn-info"></a>' +
         '<br><a href="' + editUrl + '"><input type="button" value="Edit" class="btn-warning"></a>' +
         '<a href="' + deleteUrl + '"><input type="button" value="Delete" class="btn-danger"></a></p>';
 
-    var addPostToPlaceForm = '<form th:action="@{/post}" th:method="post" th:autocomplete="off">' +
-        document.getElementById("onlyPostForm") + '<input type="hidden" class="form-control" id="place"' +
-        ' th:field="*{post.place}"></form>'
 
     var infowindow = new google.maps.InfoWindow({
         content: markerInfo,
@@ -122,12 +116,26 @@ function placeMarker(location, avgTime, place) {
 
     marker.addListener("click", () => {
         infowindow.open(map, marker);
-        addPost.addEventListener("click", function () {
-            document.getElementById("place")
-            infoWindow.setContent(addPostToPlaceForm);
-        });
+        addPost(marker, place);
     });
     return marker;
+}
+
+function addPost(position, place) {
+    var placeName = place.name;
+    $('body').on('click', '.addPost', function () {
+        document.getElementById("placeName").innerHTML = placeName;
+        document.getElementById("placeId").value = place.id;
+        var addPostForm = document.getElementById("addPostForm");
+        addPostForm.className = 'show';
+
+        const addPostWindow = new google.maps.InfoWindow({
+            content: addPostForm,
+            maxWidth: 300
+        });
+
+        addPostWindow.open(map, position);
+    });
 }
 
 function changeMarkerColour(time) {

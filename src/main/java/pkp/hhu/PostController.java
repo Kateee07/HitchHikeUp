@@ -10,10 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pkp.hhu.place.Place;
 import pkp.hhu.place.PlaceService;
@@ -113,13 +110,34 @@ public class PostController {
             postService.save(post);
 
             log.info("Place Saved. Attached photo: >>>" + fileName + "<<<. No photo if field empty.");
-          
+
             return "redirect:/";
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Exception: " + e);
             return "redirect:/";
         }
+    }
+
+    @PostMapping("/addPost")
+    public String addPost(@RequestParam("placeId") int placeId, @RequestParam("commentPost") String comment,
+                          @RequestParam("timePost") int time, @RequestParam("ratePost") int rate) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Post post = new Post();
+        post.setComment(comment);
+        post.setTime(time);
+        post.setRate(rate);
+        post.setUser(user);
+        post.setDate(LocalDate.now());
+        Place place = placeService.findById(placeId);
+        post.setPlace(place);
+        postService.save(post);
+        int timeAvg = postService.avgPlaceTime(placeId);
+        float rateAvg = postService.avgPlaceRate(placeId);
+        place.setTimeAvg(timeAvg);
+        place.setRateAvg(rateAvg);
+        placeService.save(place);
+        return "redirect:/";
     }
 
     @GetMapping("/place")
