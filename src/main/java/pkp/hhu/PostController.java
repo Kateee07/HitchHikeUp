@@ -3,8 +3,6 @@ package pkp.hhu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -113,13 +111,34 @@ public class PostController {
             postService.save(post);
 
             log.info("Place Saved. Attached photo: >>>" + fileName + "<<<. No photo if field empty.");
-          
+
             return "redirect:/";
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Exception: " + e);
             return "redirect:/";
         }
+    }
+
+    @PostMapping("/addPost")
+    public String addPost(@RequestParam("placeId") int placeId, @RequestParam("commentPost") String comment,
+                          @RequestParam("timePost") int time, @RequestParam("ratePost") int rate) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Post post = new Post();
+        post.setComment(comment);
+        post.setTime(time);
+        post.setRate(rate);
+        post.setUser(user);
+        post.setDate(LocalDate.now());
+        Place place = placeService.findById(placeId);
+        post.setPlace(place);
+        postService.save(post);
+        int timeAvg = postService.avgPlaceTime(placeId);
+        float rateAvg = postService.avgPlaceRate(placeId);
+        place.setTimeAvg(timeAvg);
+        place.setRateAvg(rateAvg);
+        placeService.save(place);
+        return "redirect:/";
     }
 
     @GetMapping("/place")

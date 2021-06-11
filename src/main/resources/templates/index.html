@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>HHU - Find Your Way</title>
@@ -7,66 +7,75 @@
     <link rel="icon" href="/images/logo.png" type="image/x-icon">
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.6.0-1/css/bootstrap.css} "/>
     <link th:rel="stylesheet" th:href="@{styles/map.css} "/>
-
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous">
+    </script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
 </head>
 <body>
-<div id="before-map"
-     th:style="'background-image:url(' + @{/images/2.jpg} + '); height:55vh; background-position: center; background-repeat: no-repeat; background-size: cover;'">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-        <div class="container">
-            <a class="navbar-brand" href="/">HitchHikeUp</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                    aria-controls="navbarResponsive"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
-        <div class="row">
-            <div class="col-sm-10 mt-5">
-                <form method="post" th:action="@{/}">
-                    <div class="form-group row">
-                        <label for="username" class="col-sm-2 col-form-label" th:style="'background-color: white'">Username:</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="username" th:name="username"/>
+        <a class="navbar-brand" href="/">HitchHikeUp</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" sec:authorize="isAuthenticated()"> Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div sec:authorize="!isAuthenticated()">
+    <div id="before-map"
+         th:style="'background-image:url(' + @{/images/2.jpg} + '); height:55vh; background-position: center; background-repeat: no-repeat; background-size: cover;'">
+        <!-- Navigation -->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10 mt-5">
+                    <form method="post" sec:authorize="isAnonymous()" th:action="login">
+                        <div class="form-group row">
+                            <label for="username" class="col-sm-2 col-form-label"
+                                   th:style="'background-color: white'">Username:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="username" th:name="username"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="password" class="col-sm-2 col-form-label" th:style="'background-color: white'">Password:</label>
-                        <div class="col-sm-4">
-                            <input type="password" class="form-control" id="password" autocomplete="off"
-                                   th:name="password"/>
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-2 col-form-label"
+                                   th:style="'background-color: white'">Password:</label>
+                            <div class="col-sm-4">
+                                <input type="password" class="form-control" id="password" autocomplete="off"
+                                       th:name="password"/>
+                            </div>
                         </div>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Login</button>
-                </form>
-                <a th:href="@{/register}" class="nav-link">Register</a>
+                        <button class="btn btn-primary" type="submit">Login</button>
+                        <a th:href="@{/register}" class="nav-link">Register</a>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 <div id="map"></div>
-
 <div id="postForm" class="hidden">
     <form th:action="@{/post}" th:method="post" th:autocomplete="off" enctype="multipart/form-data">
         <div class="form-group row">
@@ -77,11 +86,9 @@
                 <input type="text" class="form-control" name="name" id="name">
             </div>
         </div>
-
         <!-- Auto wypelnienie wspolrzednymi z klikniecia na mapie -->
         <input type="hidden" class="form-control" name="lat" id="latitude" th:field="${place.lat}">
         <input type="hidden" class="form-control" name="lng" id="longitude" th:field="*{place.lng}">
-
         <div>
             <label>Direction </label>
             <select name="direction">
@@ -109,34 +116,62 @@
                 <input type="file" class="form-control-file" name="photo" id="photo">
             </div>
         </div>
-        <div id="onlyPostForm">
-            <div class="form-group row">
-                <label for="rate" class="col-form-label col-sm-3" th:style="'background-color: white'"> Rate
-                    (max 10): </label>
-                <div class="col-sm-4">
-                    <input type="number" class="form-control" id="rate" th:max="10" th:field="*{post.rate}">
-                </div>
+        <div class="form-group row">
+            <label for="rate" class="col-form-label col-sm-3" th:style="'background-color: white'"> Rate
+                (max 10): </label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="rate" th:min="0" th:max="10" th:field="*{post.rate}">
             </div>
-            <div class="form-group row">
-                <label for="time" class="col-sm-3 col-form-label" th:style="'background-color: white'">
-                    Time (minutes): </label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="time" th:field="*{post.time}">
-                </div>
+        </div>
+        <div class="form-group row">
+            <label for="time" class="col-sm-3 col-form-label" th:style="'background-color: white'">
+                Time (minutes): </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="time" th:field="*{post.time}">
             </div>
-            <div class="form-group row">
-                <label for="comment" class="col-form-label col-sm-3" th:style="'background-color: white'">
-                    Comment: </label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="comment" th:field="*{post.comment}">
-                </div>
+        </div>
+        <div class="form-group row">
+            <label for="comment" class="col-form-label col-sm-3" th:style="'background-color: white'">
+                Comment: </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="comment" th:field="*{post.comment}">
             </div>
         </div>
         <input type="submit" value="Add post" class="align-self-center btn-primary">
     </form>
 </div>
-<script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByTO8qyZh8RrVO61nvhjaKL7O1bdlVqx4&callback=initMap">
+
+<div id="addPostForm" class="hidden">
+    <h3 id="placeName" class="text-center"></h3>
+    <form th:action="@{/addPost}" th:method="post" th:autocomplete="off">
+        <div class="form-group row">
+            <label for="ratePost" class="col-form-label col-sm-3" th:style="'background-color: white'"> Rate
+                (max 10): </label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="ratePost" name="ratePost" th:max="10">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="timePost" class="col-sm-3 col-form-label" th:style="'background-color: white'">
+                Time (minutes): </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="timePost" name="timePost">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="commentPost" class="col-form-label col-sm-3" th:style="'background-color: white'">
+                Comment: </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="commentPost" name="commentPost">
+            </div>
+        </div>
+        <input type="hidden" id="placeId" name="placeId">
+        <input type="submit" value="Add post" class="align-self-center btn-primary">
+    </form>
+</div>
+
+<script defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
 </script>
 <script th:inline="javascript"> var locationsList = [[${places}]]; </script>
 <!--<script th:inline="javascript"> var oneLocation= [[${place}]]; </script>-->
