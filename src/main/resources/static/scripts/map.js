@@ -5,9 +5,6 @@
 
 let map, infoWindow, newMarkerInfoWindow;
 let marker;
-// let postForm = document.getElementById("postForm");
-// let copyPostForm = postForm.cloneNode(true);
-// let documentCopy = document.cloneNode(true);
 let documentCopy;
 
 const greenMarker = 'https://maps.google.com/mapfiles/ms/icons/green-dot.png';

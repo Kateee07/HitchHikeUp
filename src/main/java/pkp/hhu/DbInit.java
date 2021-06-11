@@ -29,12 +29,16 @@ public class DbInit implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         LOGGER.info("Kod wykonywany po inicjalizacji beana");
+      
         User admin1 = new User("admin1", passwordEncoder.encode("pass1"), "ADMIN");
-        userRepository.save(admin1);
         User user1 = new User("user1", passwordEncoder.encode("pass11"), "USER");
+      
+        userRepository.save(admin1);
         userRepository.save(user1);
+
         Place place1 = new Place("Rondo Dmowskiego", BigDecimal.valueOf(52.229878), BigDecimal.valueOf(21.010653), "W", 3, 70, "Koło patelni", null);
         Place place2 = new Place("Mak przed Łomiankami", BigDecimal.valueOf(52.308780), BigDecimal.valueOf(20.9274978), "N", 6, 30, "Droga na Gdańsk koło McDonalds przed Łomiankami", null);
+
         placeRepository.save(place1);
         placeRepository.save(place2);
     }
