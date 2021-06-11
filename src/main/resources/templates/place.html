@@ -42,10 +42,10 @@
         <ul class="list-group list-group-flush">
             <li>
                 <ol class="list-group-item-" th:each="post: ${posts}">
-                    <li  class="list-group-item" th:text="${post.getComment()}"></li>
-                    <li   th:text="${post.getRate()}"></li>
-                    <li   th:text="${post.getTime()}"></li>
-                    <li   th:text="${post.getDate()}"></li>
+                    <li class="list-group-item" th:text="${post.getComment()}"></li>
+                    <li th:text="${post.getRate()}"></li>
+                    <li th:text="${post.getTime()}"></li>
+                    <li th:text="${post.getDate()}"></li>
                 </ol>
             </li>
         </ul>
