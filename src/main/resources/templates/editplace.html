@@ -56,7 +56,7 @@
                 <div>
                     <label>Direction </label>
                     <select name="direction">
-                        <option th:value="${place.getDirection()}"></option>
+                        <option th:value="${place.getDirection()}" th:text="${place.getDirection()}"></option>
                         <option value="N">N</option>
                         <option value="S">S</option>
                         <option value="W">W</option>
@@ -80,7 +80,7 @@
                         Photo: </label>
                     <div class="col-sm-10">
                         <input type="file" class="form-control-file" name="photo" id="photo">
-                        <img src="/place/show-photo-by-id/+${id}" class="float-right" style="max-width: 700px" alt="Photo of the place"/>
+                        <img th:src="@{${'/place/show-photo-by-id/' + place.id}}" class="float-right" style="max-width: 250px" alt="Photo of the place"/>
                     </div>
                 </div>
                 <input type="submit" value="Add post" class="align-self-center btn-primary">
