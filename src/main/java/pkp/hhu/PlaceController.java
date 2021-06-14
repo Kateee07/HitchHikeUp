@@ -3,6 +3,7 @@ package pkp.hhu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pkp.hhu.place.Place;
 import pkp.hhu.place.PlaceService;
@@ -49,4 +50,16 @@ public class PlaceController {
         }
     }
 
+    @GetMapping("/place/edit/{id}")
+    public String editPlace(@PathVariable Integer id, ModelMap modelMap) {
+        Place place = placeService.findById(id);
+        modelMap.addAttribute("place", place);
+        return "editplace";
+    }
+
+    @PostMapping("/place/editted/{id}")
+    public String submitEditPlace(@RequestParam Place place) {
+        placeService.save(place);
+        return "redirect:/";
+    }
 }

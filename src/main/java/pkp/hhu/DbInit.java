@@ -1,4 +1,4 @@
-package pkp.hhu;
+/*package pkp.hhu;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,3 +40,4 @@ public class DbInit implements InitializingBean {
     }
 
 }
+ */
