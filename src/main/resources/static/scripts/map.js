@@ -3,22 +3,23 @@
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
 
-let map, infoWindow;
-var marker;
+let map, infoWindow, newMarkerInfoWindow;
+let marker;
+let documentCopy;
 
 const greenMarker = 'https://maps.google.com/mapfiles/ms/icons/green-dot.png';
 const yellowMarker = 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
 const blueMarker = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
 const redMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
 
-
 function initMap(listener) {
 
-    const warsaw = {lat: 52.237049, lng: 21.017532};
+    const center = {lat: 51.685556, lng: 18.985000};
+
     // Stwórz nowy obiekt google maps o nazwie "map"
     map = new google.maps.Map(document.getElementById("map"), {
-        center: warsaw,
-        zoom: 8,                                  // Przybliżenie skala 1 - świat, 20 - budynek
+        center: center,
+        zoom: 7,                                  // Przybliżenie skala 1 - świat, 20 - budynek
     });
 
     var oneLocation = [];
@@ -63,6 +64,7 @@ function initMap(listener) {
                     infoWindow.setContent("Location found."); //Wyswietli na wyszukanej lokalizacji napis w srodku
                     infoWindow.open(map); // Otworz mape
                     map.setCenter(pos);   // Ustaw pozycje na pobrana pozycje uzytkownika
+                    map.setZoom(12);
                 },
                 () => {
                     handleLocationError(true, infoWindow, map.getCenter());
@@ -75,17 +77,18 @@ function initMap(listener) {
     });
 
     const newSpotButton = document.createElement("button");
+    newMarkerInfoWindow = new google.maps.InfoWindow();
     newSpotButton.textContent = "Add spot.";
     newSpotButton.classList.add("custom-map-control-button");
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(newSpotButton);
-    //Kliknij przycisk "add spot", aby dodac marker
+    //Kliknij przycisk "add spot", aby dodać marker
     newSpotButton.addEventListener("click", () => {
         //Dodaj marker w miejscu gdzie znajdujee sie kursos na mapie.
 
         google.maps.event.addListener(map, 'click', function (event) {
             placeNewMarker(map, event.latLng);
-        }, {once: true});
-    }, {once: true})
+        });
+    })
 }
 
 function placeMarker(location, avgTime, place) {
@@ -93,7 +96,7 @@ function placeMarker(location, avgTime, place) {
         position: location,
         icon: changeMarkerColour(avgTime)
     });
-    var postsUrl = 'place?id=' + place.id;
+    var postsUrl = 'posts?id=' + place.id;
     var editUrl = 'place/edit/' + place.id;
     var deleteUrl = 'place/delete/' + place.id;
     var showPhotoUrl = '/place/show-photo-by-id/' + place.id;
@@ -156,15 +159,22 @@ function placeNewMarker(map, location) {
             map: map,
             icon: blueMarker
         });
-    }
 
-    document.getElementById("latitude").value = location.lat();
-    document.getElementById("longitude").value = location.lng();
-    document.getElementById("postForm").className = 'show';
-    var infowindow = new google.maps.InfoWindow({
-        content: document.getElementById("postForm")
-    });
-    infowindow.open(map, marker);
+        marker.addListener("click", () => {
+            newMarkerInfoWindow.open(marker.get("map"), marker);
+            console.log('onclick')
+            console.log(newMarkerInfoWindow.getContent())
+        });
+
+    }
+    documentCopy = document.cloneNode(true);
+    documentCopy.getElementById("latitude").value = location.lat();
+    documentCopy.getElementById("longitude").value = location.lng();
+    documentCopy.getElementById("postForm").className = 'show';
+    newMarkerInfoWindow.setContent(documentCopy.getElementById("postForm"));
+    newMarkerInfoWindow.open(marker.get("map"), marker);
+
+    console.log(newMarkerInfoWindow.getContent())
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {

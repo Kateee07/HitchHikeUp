@@ -1,4 +1,4 @@
-package pkp.hhu;
+package pkp.hhu.user;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.BadCredentialsException;
