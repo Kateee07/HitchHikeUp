@@ -14,12 +14,12 @@ const redMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
 
 function initMap(listener) {
 
-    const warsaw = {lat: 52.237049, lng: 21.017532};
+    const center = {lat: 51.685556, lng: 18.985000};
 
     // Stwórz nowy obiekt google maps o nazwie "map"
     map = new google.maps.Map(document.getElementById("map"), {
-        center: warsaw,
-        zoom: 8,                                  // Przybliżenie skala 1 - świat, 20 - budynek
+        center: center,
+        zoom: 7,                                  // Przybliżenie skala 1 - świat, 20 - budynek
     });
 
     var oneLocation = [];
@@ -96,7 +96,7 @@ function placeMarker(location, avgTime, place) {
         position: location,
         icon: changeMarkerColour(avgTime)
     });
-    var postsUrl = 'place?id=' + place.id;
+    var postsUrl = 'posts?id=' + place.id;
     var editUrl = 'place/edit/' + place.id;
     var deleteUrl = 'place/delete/' + place.id;
     var showPhotoUrl = '/place/show-photo-by-id/' + place.id;
