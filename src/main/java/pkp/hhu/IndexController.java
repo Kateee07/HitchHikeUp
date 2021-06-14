@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class IndexController {
-    private static Logger logger = LoggerFactory.getLogger(ErrorController.class);
+//    private static Logger logger = LoggerFactory.getLogger(ErrorController.class);
 
     private PostService postService;
     private PlaceService placeService;

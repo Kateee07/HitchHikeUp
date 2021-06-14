@@ -36,9 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
 
-   //             .loginPage("/")
-//                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/")
+//                .loginPage("/")
+                .loginProcessingUrl("/login")
+//                .defaultSuccessUrl("/")
     //            .failureUrl("/")
 
                 .and()
@@ -48,9 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/after-login")
                 .authenticated()
-                .antMatchers("/post")
+                .antMatchers("/post/add")
                 .authenticated()
-                .antMatchers("/post/coordinates")
+                .antMatchers("/place/add")
+                .authenticated()
+                .antMatchers("/place/edit")
                 .authenticated()
                 .antMatchers("/**")
                 .permitAll();
