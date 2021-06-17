@@ -4,8 +4,9 @@
 * [Technologies](#technologies)
 * [Features](#features)
 * [Setup](#setup)
-* [Project status](#project status)
+* [Project status](#project-status)
 * [Acknowledgements](#acknowledgements)
+* [Photo](#photo)
 * [Contact](*contact)
 ## General Info
 - A web application for hitchhikers that offers viewing ride-catching spots added and rated by others, and also offers adding spots or comments (with ratings) for existing spots by oneself, everything powered by Google Maps.
@@ -30,7 +31,6 @@ Project is created with:
 - Login as User or Admin
 - Guest (no-login) privileges: discovering map and spots, reading comments
 - User privileges: adding new spots and rating/commenting existing spots
-  ![Add spot](./addSpot.png)
 - Admin privleges: editing and deleting spots
 ## Setup
 - Clone this repo to your desktop and run npm install to install all the dependencies.
@@ -41,6 +41,12 @@ Project is created with:
 Project is: working & being still slightly modified to match our expectiations. The project was an exercise and it did the job.
 ## Acknowledgements
 This project was inspired by the desire to create something new using third-party API and freshly learned technologies like Java, Spring Boot, Thymeleaf etc.
+## Photo 
+  ![Add spot](./addSpot.png)
+  ![AddPostSpecimen](./AddPostSpeciem.png)
+  ![PostsComments](./PostsComments.png)
+  ![Spotspecimen](./SpotSpeciem.png)
+  ![Spotspecimen2](./SpotSpeciem2.png)
 ## Contact
 Created by 
 - Przemyslaw Dawidowski - @zoluch 
