@@ -43,10 +43,10 @@ Project is: working & being still slightly modified to match our expectiations. 
 This project was inspired by the desire to create something new using third-party API and freshly learned technologies like Java, Spring Boot, Thymeleaf etc.
 ## Photo 
   ![Add spot](./addSpot.png)
-  ![AddPostSpecimen](./AddPostSpeciem.png)
+  ![AddPostSpecimen](./AddPostSpecimen.png)
   ![PostsComments](./PostsComments.png)
-  ![Spotspecimen](./SpotSpeciem.png)
-  ![Spotspecimen2](./SpotSpeciem2.png)
+  ![SpotSpecimen](./SpotSpecimen.png)
+  ![SpotSpecimen2](./SpotSpecimen2.png)
 ## Contact
 Created by 
 - Przemyslaw Dawidowski - @zoluch 
