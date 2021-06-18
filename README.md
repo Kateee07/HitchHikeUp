@@ -49,7 +49,7 @@ This project was inspired by the desire to create something new using third-part
   ![SpotSpecimen2](./SpotSpecimen2.png)
 ## Contact
 Created by 
-- Przemyslaw Dawidowski - @zoluch 
+- Przemyslaw Dawidowski - @davvvidy
 - Paweł Rutkowski - @pwrutkowski
 - Kasia Przybylska - @Kate007
 
