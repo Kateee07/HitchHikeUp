@@ -10,11 +10,9 @@ import java.util.Optional;
 @Service
 public class PlaceService {
     private PlaceRepository placeRepository;
-    private PostRepository postRepository;
 
     public PlaceService(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
-        this.postRepository = postRepository;
     }
 
     public List<Place> findAll() {return placeRepository.findAll();}

@@ -12,23 +12,22 @@ import pkp.hhu.user.UserService;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
-    private PasswordEncoderConfig passwordEncoderConfig;
+//     private PasswordEncoderConfig passwordEncoderConfig;
 
     public SecurityConfig(UserService userService, PasswordEncoderConfig passwordEncoderConfig) {
         this.userService = userService;
-        this.passwordEncoderConfig = passwordEncoderConfig;
+//         this.passwordEncoderConfig = passwordEncoderConfig;
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password(passwordEncoderConfig.passwordEncoder().encode("password")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoderConfig.passwordEncoder().encode("admin")).roles("ADMIN");
-    }
-
+//     @Autowired
+//     public void configureGlobal(AuthenticationManagerBuilder auth)
+//             throws Exception {
+//         auth
+//                 .inMemoryAuthentication()
+//                 .withUser("user").password(passwordEncoderConfig.passwordEncoder().encode("password")).roles("USER")
+//                 .and()
+//                 .withUser("admin").password(passwordEncoderConfig.passwordEncoder().encode("admin")).roles("ADMIN");
+//     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,10 +35,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .formLogin()
-                //             .loginPage("/")
-//                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/")
-                //            .failureUrl("/")
+
+//                .loginPage("/")
+                .loginProcessingUrl("/login")
+//                .defaultSuccessUrl("/")
+    //            .failureUrl("/")
+
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
@@ -47,9 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/after-login")
                 .authenticated()
-                .antMatchers("/post")
+                .antMatchers("/post/add")
                 .authenticated()
-                .antMatchers("/post/coordinates")
+                .antMatchers("/place/add")
+                .authenticated()
+                .antMatchers("/place/edit")
                 .authenticated()
                 .antMatchers("/**")
                 .permitAll();
